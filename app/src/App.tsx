@@ -1,6 +1,20 @@
+import { useEffect } from "react";
 import "./App.css";
 
 function App() {
+  useEffect(() => {
+    fetch("http://127.0.0.1:8080/all-shippers", {
+      method: "GET",
+    })
+      .then((response) => {
+        console.log(response);
+        if (response.ok) return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      });
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">

@@ -1,15 +1,27 @@
-import database
+import mysql.connector
 from flask import Flask, jsonify
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+CORS(app)
+
+mydb = mysql.connector.connect(
+    host="127.0.0.1",
+    user="root",
+    password="password",
+    database="northwind"
+)
+
+mycursor = mydb.cursor()
 
 
-@app.route('/api/all-customers', methods=['GET'])
+@app.route('/all-shippers', methods=['GET'])
 def requesting():
-    database.mycursor.execute("SELECT * FROM customer")
-    result = database.mycursor.fetchall()
-    print(result)
-    return jsonify(result)
+    mycursor.execute("SELECT * FROM shipper")
+    queryResult = mycursor.fetchall()
+    data = jsonify(queryResult)
+    print(data)
+    return data
 
 
 if __name__ == '__main__':
