@@ -14,8 +14,8 @@ router.get("/javascript/all-customers", (req, res) => {
   });
 });
 
-router.get("/javascript/all-shipper", (req, res) => {
-  let sql = "SELECT * FROM shippers";
+router.get("/javascript/all-shippers", (req, res) => {
+  let sql = "SELECT * FROM shipper";
 
   database.query(sql, (error, result) => {
     if (error) throw error;
@@ -24,3 +24,5 @@ router.get("/javascript/all-shipper", (req, res) => {
     console.log("success!");
   });
 });
+
+module.exports = router;
