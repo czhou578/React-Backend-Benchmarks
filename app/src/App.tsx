@@ -8,7 +8,7 @@ function App() {
 
   useEffect(() => {
     let start = performance.now();
-    fetch("http://127.0.0.1:8080/all-shippers", {
+    fetch("http://127.0.0.1:8080/python/all-shippers", {
       method: "GET",
     })
       .then((response) => {

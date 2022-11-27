@@ -1,1 +1,0 @@
-This text file will show the results of the benchmark.

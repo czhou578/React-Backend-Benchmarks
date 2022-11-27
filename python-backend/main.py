@@ -15,7 +15,7 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 
-@app.route('/all-shippers', methods=['GET'])
+@app.route('/python/all-shippers', methods=['GET'])
 def requesting():
     mycursor.execute("SELECT * FROM shipper")
     queryResult = mycursor.fetchall()
