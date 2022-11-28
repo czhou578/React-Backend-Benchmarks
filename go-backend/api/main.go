@@ -1,8 +1,8 @@
 package main
 
 import (
+	"api/models"
 	"net/http"
-	"simpleApi/models"
 
 	"github.com/gin-gonic/gin"
 )
