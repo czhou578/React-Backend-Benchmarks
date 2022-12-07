@@ -5,7 +5,7 @@ export default function AccordionExampleFluid() {
   const [activeIndex, setActiveIndex] = useState(-1);
 
   return (
-    <Accordion fluid styled>
+    <Accordion styled>
       <Accordion.Title
         active={activeIndex === 0}
         index={0}

@@ -28,6 +28,12 @@
   margin-bottom: 40px !important;
 }
 
+.accordion {
+  margin: 0 auto;
+  margin-top: 40px !important;
+  width: 80% !important;
+}
+
 /* .App-logo {
   height: 40vmin;
   pointer-events: none;

@@ -1,51 +1,42 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Dropdown, Form, Input } from "semantic-ui-react";
 import Accordion from "./Accordion";
 import "./App.css";
+
+//
 
 function App() {
   const [active, setActive] = useState(false);
   const [pythonFetchTime, setPythonFetchTime] = useState(0);
   const [jsFetchTime, setJSFetchTime] = useState(0);
 
-  useEffect(() => {
-    let start = performance.now();
-    fetch("http://127.0.0.1:8083/go/all-shippers", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        console.log(response);
-        if (response.ok) return response.json();
-      })
-      .then((data) => {
-        let end = performance.now();
-        // setJSFetchTime(end - start);
-        console.log("end of go fetch: ", end - start);
-        console.log(data);
-      });
-  }, []);
+  const [languageSequence, setLanguageSequence] = useState("");
+  const [queryType, setQueryType] = useState("");
+  const [iterations, setIterations] = useState(0);
 
-  useEffect(() => {
-    let start = performance.now();
-    fetch("http://127.0.0.1:8080/python/all-shippers", {
-      method: "GET",
-    })
-      .then((response) => {
-        console.log(response);
-        if (response.ok) return response.json();
+  const getAllShippersGo = (iterations: number) => {
+    for (let i = 0; i < iterations; i++) {
+      let start = performance.now();
+      fetch("http://127.0.0.1:8083/go/all-shippers", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
-      .then((data) => {
-        let end = performance.now();
-        setPythonFetchTime(end - start);
-        console.log("end of python fetch: ", end - start);
-        console.log(data);
-      });
-  }, [active]);
+        .then((response) => {
+          console.log(response);
+          if (response.ok) return response.json();
+        })
+        .then((data) => {
+          let end = performance.now();
+          // setJSFetchTime(end - start);
+          console.log("end of go fetch: ", end - start);
+          console.log(data);
+        });
+    }
+  };
 
-  useEffect(() => {
+  const getAllShippersJS = (iterations: number) => {
     let start = performance.now();
     fetch("http://127.0.0.1:3001/northwind/javascript/all-shippers", {
       method: "GET",
@@ -60,7 +51,24 @@ function App() {
         console.log("end of js fetch: ", end - start);
         console.log(data);
       });
-  }, []);
+  };
+
+  const getAllShippersPython = (iterations: number) => {
+    let start = performance.now();
+    fetch("http://127.0.0.1:3001/northwind/javascript/all-shippers", {
+      method: "GET",
+    })
+      .then((response) => {
+        console.log(response);
+        if (response.ok) return response.json();
+      })
+      .then((data) => {
+        let end = performance.now();
+        setJSFetchTime(end - start);
+        console.log("end of js fetch: ", end - start);
+        console.log(data);
+      });
+  };
 
   const options = [
     {
@@ -91,6 +99,11 @@ function App() {
       text: "Python",
       value: "Python",
     },
+    {
+      key: "JavaScript, Go, Python",
+      text: "JavaScript, Go, Python",
+      value: "JavaScript, Go, Python",
+    },
   ];
 
   // {/* <button onClick={() => setActive(true)}>Run Tests</button> */}
@@ -104,13 +117,16 @@ function App() {
         <Form className="form">
           <Form.Group widths="equal">
             <Form.Field>
-              <label className="label">Language</label>
+              <label className="label">Select Language</label>
               <Dropdown
                 placeholder="Select Language"
                 fluid
                 selection
                 options={languages}
-              />
+                onChange={(e, data) => {
+                  setLanguageSequence(data.value as string);
+                }}
+              />{" "}
             </Form.Field>
             <Form.Field>
               <label className="label">Query Type</label>
@@ -119,63 +135,28 @@ function App() {
                 fluid
                 selection
                 options={options}
+                onChange={(e, data) => {
+                  setQueryType(data.value as string);
+                }}
               />
             </Form.Field>
             <Form.Field>
               <label className="label"># of Repetitions</label>
-              <Input fluid placeholder={0} type="number" />
-            </Form.Field>
-          </Form.Group>
-        </Form>
-        <Form className="form">
-          <Form.Group widths="equal">
-            <Form.Field>
-              <Dropdown
-                placeholder="Select Language"
+              <Input
                 fluid
-                selection
-                options={languages}
+                placeholder={0}
+                type="number"
+                id="reps1"
+                onChange={(e, data) => {
+                  setIterations(parseInt(data.value));
+                }}
               />
-            </Form.Field>
-            <Form.Field>
-              <Dropdown
-                placeholder="Select Type"
-                fluid
-                selection
-                options={options}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Input fluid placeholder={0} type="number" />
-            </Form.Field>
-          </Form.Group>
-        </Form>
-        <Form className="form">
-          <Form.Group widths="equal">
-            <Form.Field>
-              <Dropdown
-                placeholder="Select Language"
-                fluid
-                selection
-                options={languages}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Dropdown
-                placeholder="Select Type"
-                fluid
-                selection
-                options={options}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Input fluid placeholder={0} type="number" />
             </Form.Field>
           </Form.Group>
         </Form>
         <Button positive>Run Queries</Button>
       </div>
-      <div>
+      <div className="accordion">
         <Accordion />
       </div>
     </div>
