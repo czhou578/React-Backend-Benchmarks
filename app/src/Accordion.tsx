@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { Accordion, Icon } from "semantic-ui-react";
 
-export default function AccordionExampleFluid() {
+interface Props {
+  jsTime: object;
+  goTime: object;
+  pythonTime: object;
+}
+
+export default function AccordionExampleFluid(props: Props) {
+  const { jsTime, goTime, pythonTime } = props;
+
   const [activeIndex, setActiveIndex] = useState(-1);
 
   return (
@@ -14,14 +22,10 @@ export default function AccordionExampleFluid() {
         }}
       >
         <Icon name="dropdown" />
-        What is a dog?
+        JavaScript Run
       </Accordion.Title>
       <Accordion.Content active={activeIndex === 0}>
-        <p>
-          A dog is a type of domesticated animal. Known for its loyalty and
-          faithfulness, it can be found as a welcome guest in many households
-          across the world.
-        </p>
+        {/* <h2>{jsTime.length != 0 ? jsTime : null}</h2> */}
       </Accordion.Content>
 
       <Accordion.Title
@@ -32,7 +36,7 @@ export default function AccordionExampleFluid() {
         }}
       >
         <Icon name="dropdown" />
-        What kinds of dogs are there?
+        Golang Run
       </Accordion.Title>
       <Accordion.Content active={activeIndex === 1}>
         <p>
@@ -50,7 +54,7 @@ export default function AccordionExampleFluid() {
         }}
       >
         <Icon name="dropdown" />
-        How do you acquire a dog?
+        Python Run
       </Accordion.Title>
       <Accordion.Content active={activeIndex === 2}>
         <p>
