@@ -17,6 +17,10 @@ type Shipper struct {
 	Phone       string
 }
 
+type EmployeeId struct {
+	CountUserId int
+}
+
 func GetShippers() []Shipper {
 	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
 
@@ -51,5 +55,40 @@ func GetShippers() []Shipper {
 	}
 
 	return shippers
+
+}
+
+func GetCountNumId() []EmployeeId {
+	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
+	if err != nil {
+		fmt.Println("error", err.Error())
+		return nil
+	}
+
+	defer db.Close()
+
+	results, err := db.Query("select count(employeeId) from employeeterritory natural join region natural join territory group by regionId")
+
+	if err != nil {
+		fmt.Println("error", err.Error())
+		return nil
+	}
+
+	countEmployees := []EmployeeId{}
+
+	for results.Next() {
+		var employeeCount EmployeeId
+
+		err = results.Scan(&employeeCount.CountUserId)
+
+		if err != nil {
+			panic(err.Error())
+		}
+
+		countEmployees = append(countEmployees, employeeCount)
+
+	}
+
+	return countEmployees
 
 }

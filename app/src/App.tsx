@@ -39,8 +39,6 @@ function App() {
           })
           .then((data) => {
             let end = performance.now();
-            // setJSFetchTime(end - start);
-            // console.log("end of go fetch: ", end - start);
             timeObj[(i + 1).toString()] = end - start;
             // setGOFetchTime({ ...goFetchTime, [i + 1]: end - start });
             // console.log(data);
@@ -114,6 +112,83 @@ function App() {
       setPythonFetchTime(timeObj);
       console.log(JSON.stringify(timeObj));
     });
+  };
+
+  const getCountNumEmployeeIdJS = (iterations: number) => {
+    let timeObj: timeObjDef = {};
+
+    let fetches = [];
+    let start = performance.now();
+    console.log(start);
+
+    for (let i = 0; i < iterations; i++) {
+      fetches.push(
+        fetch("http://127.0.0.1:3001/northwind/javascript/num-employeeId", {
+          method: "GET",
+        })
+          .then((response) => {
+            console.log(response);
+            if (response.ok) return response.json();
+          })
+          .then((data) => {
+            let end = performance.now();
+            setJSFetchTime(end - start);
+            console.log("end of js fetch: ", end - start);
+            console.log(data);
+          })
+      );
+    }
+
+    Promise.all(fetches).then(() => {
+      setPythonFetchTime(timeObj);
+      console.log(JSON.stringify(timeObj));
+    });
+  };
+
+  const getCountNumEmployeeIdGo = (iterations: number) => {
+    let timeObj: timeObjDef = {};
+
+    let fetches = [];
+    let start = performance.now();
+    console.log(start);
+
+    for (let i = 0; i < iterations; i++) {
+      fetches.push(
+        fetch("http://127.0.0.1:8083/go/count-employee-id", {
+          method: "GET",
+        })
+          .then((response) => {
+            console.log(response);
+            if (response.ok) return response.json();
+          })
+          .then((data) => {
+            let end = performance.now();
+            setGOFetchTime(end - start);
+            console.log("end of go fetch: ", end - start);
+            console.log(data);
+          })
+      );
+    }
+
+    Promise.all(fetches).then(() => {
+      setPythonFetchTime(timeObj);
+      console.log(JSON.stringify(timeObj));
+    });
+  };
+
+  const conditionCallRoute = () => {
+    if (languageSequence === "Go" && queryType === "GET")
+      getAllShippersGo(iterations);
+    else if (languageSequence === "JavaScript" && queryType === "GET")
+      getAllShippersJS(iterations);
+    else if (languageSequence === "Python" && queryType === "GET")
+      getAllShippersPython(iterations);
+    else if (languageSequence === "Go" && queryType === "JOIN")
+      getCountNumEmployeeIdGo(iterations);
+    else if (languageSequence === "JavaScript" && queryType === "JOIN")
+      getCountNumEmployeeIdJS(iterations);
+    else if (languageSequence === "Python" && queryType === "GET")
+      getAllShippersPython(iterations);
   };
 
   const options = [
@@ -200,15 +275,7 @@ function App() {
             </Form.Field>
           </Form.Group>
         </Form>
-        <Button
-          positive
-          onClick={() => {
-            if (languageSequence === "Go") getAllShippersGo(iterations);
-            else if (languageSequence === "JavaScript")
-              getAllShippersJS(iterations);
-            else getAllShippersPython(iterations);
-          }}
-        >
+        <Button positive onClick={() => conditionCallRoute()}>
           Run Queries
         </Button>
       </div>

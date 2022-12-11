@@ -14,6 +14,7 @@ func main() {
 	router.Use(cors.Default())
 
 	router.GET("/go/all-shippers", getAllShippers)
+	router.GET("/go/count-employee-id", getEmployeeIDCount)
 	router.Run("localhost:8083")
 }
 
@@ -27,5 +28,16 @@ func getAllShippers(c *gin.Context) {
 		// fmt.Print(c.IndentedJSON(http.StatusOK, shippers))
 		c.Writer.Header().Set("Content-Type", "application/json; charset=utf-8")
 		c.IndentedJSON(http.StatusOK, shippers)
+	}
+}
+
+func getEmployeeIDCount(c *gin.Context) {
+	countId := models.GetCountNumId()
+
+	if countId == nil || len(countId) == 0 {
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		// c.Writer.Header().Set("Content-Type", "application/json; charset=utf-8")
+		c.IndentedJSON(http.StatusOK, countId)
 	}
 }

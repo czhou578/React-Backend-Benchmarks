@@ -25,4 +25,16 @@ router.get("/javascript/all-shippers", (req, res) => {
   });
 });
 
+router.get("/javascript/num-employeeId", (req, res) => {
+  let sql =
+    "select count(employeeId) from employeeterritory natural join region natural join territory group by regionId";
+
+  database.query(sql, (error, result) => {
+    if (error) throw error;
+
+    res.send(result);
+    console.log("success!");
+  });
+});
+
 module.exports = router;
