@@ -70,8 +70,8 @@ function App() {
           })
           .then((data) => {
             let end = performance.now();
-            setJSFetchTime(end - start);
-            console.log("end of js fetch: ", end - start);
+            // setJSFetchTime(end - start);
+            // console.log("end of js fetch: ", end - start);
             console.log(data);
           })
       );
@@ -92,7 +92,7 @@ function App() {
 
     for (let i = 0; i < iterations; i++) {
       fetches.push(
-        fetch("http://127.0.0.1:3001/northwind/javascript/all-shippers", {
+        fetch("http://127.0.0.1:8080/python/all-shippers", {
           method: "GET",
         })
           .then((response) => {
@@ -101,8 +101,8 @@ function App() {
           })
           .then((data) => {
             let end = performance.now();
-            setJSFetchTime(end - start);
-            console.log("end of js fetch: ", end - start);
+            // setPythonFetchTime(end - start);
+            // console.log("end of python fetch: ", end - start);
             console.log(data);
           })
       );
@@ -176,6 +176,37 @@ function App() {
     });
   };
 
+  const getCountNumEmployeeIdPython = (iterations: number) => {
+    let timeObj: timeObjDef = {};
+
+    let fetches = [];
+    let start = performance.now();
+    console.log(start);
+
+    for (let i = 0; i < iterations; i++) {
+      fetches.push(
+        fetch("http://127.0.0.1:8080/python/count-employee-id", {
+          method: "GET",
+        })
+          .then((response) => {
+            console.log(response);
+            if (response.ok) return response.json();
+          })
+          .then((data) => {
+            let end = performance.now();
+            setGOFetchTime(end - start);
+            console.log("end of go fetch: ", end - start);
+            console.log(data);
+          })
+      );
+    }
+
+    Promise.all(fetches).then(() => {
+      setPythonFetchTime(timeObj);
+      console.log(JSON.stringify(timeObj));
+    });
+  };
+
   const conditionCallRoute = () => {
     if (languageSequence === "Go" && queryType === "GET")
       getAllShippersGo(iterations);
@@ -187,8 +218,8 @@ function App() {
       getCountNumEmployeeIdGo(iterations);
     else if (languageSequence === "JavaScript" && queryType === "JOIN")
       getCountNumEmployeeIdJS(iterations);
-    else if (languageSequence === "Python" && queryType === "GET")
-      getAllShippersPython(iterations);
+    else if (languageSequence === "Python" && queryType === "JOIN")
+      getCountNumEmployeeIdPython(iterations);
   };
 
   const options = [
@@ -227,8 +258,6 @@ function App() {
     },
   ];
 
-  // {/* <button onClick={() => setActive(true)}>Run Tests</button> */}
-  // {/* <p>{pythonFetchTime}</p> */}
   return (
     <div className="App">
       <header className="App-header">
