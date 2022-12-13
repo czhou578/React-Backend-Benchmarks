@@ -40,8 +40,6 @@ function App() {
           .then((data) => {
             let end = performance.now();
             timeObj[(i + 1).toString()] = end - start;
-            // setGOFetchTime({ ...goFetchTime, [i + 1]: end - start });
-            // console.log(data);
           })
       );
     }
@@ -140,7 +138,7 @@ function App() {
     }
 
     Promise.all(fetches).then(() => {
-      setPythonFetchTime(timeObj);
+      setJSFetchTime(timeObj);
       console.log(JSON.stringify(timeObj));
     });
   };
@@ -171,7 +169,7 @@ function App() {
     }
 
     Promise.all(fetches).then(() => {
-      setPythonFetchTime(timeObj);
+      setGOFetchTime(timeObj);
       console.log(JSON.stringify(timeObj));
     });
   };
@@ -194,9 +192,9 @@ function App() {
           })
           .then((data) => {
             let end = performance.now();
-            setGOFetchTime(end - start);
-            console.log("end of go fetch: ", end - start);
-            console.log(data);
+            // setGOFetchTime(end - start);
+            // console.log("end of go fetch: ", end - start);
+            // console.log(data);
           })
       );
     }
