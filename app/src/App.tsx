@@ -81,6 +81,13 @@ function App() {
     });
   };
 
+  const delayFetch = (url: string, options: any) =>
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(fetch(url, options));
+      }, options.delay);
+    });
+
   const getAllShippersPython = (iterations: number) => {
     let timeObj: timeObjDef = {};
 
@@ -90,10 +97,11 @@ function App() {
 
     for (let i = 0; i < iterations; i++) {
       fetches.push(
-        fetch("http://127.0.0.1:8080/python/all-shippers", {
+        delayFetch("http://127.0.0.1:8080/python/all-shippers", {
+          delay: 1000,
           method: "GET",
         })
-          .then((response) => {
+          .then((response: any) => {
             console.log(response);
             if (response.ok) return response.json();
           })
@@ -104,6 +112,8 @@ function App() {
             console.log(data);
           })
       );
+      // setTimeout(() => "Waiting", 2000);
+      // sett
     }
 
     Promise.all(fetches).then(() => {
@@ -193,8 +203,6 @@ function App() {
           .then((data) => {
             let end = performance.now();
             // setGOFetchTime(end - start);
-            // console.log("end of go fetch: ", end - start);
-            // console.log(data);
           })
       );
     }
@@ -231,6 +239,16 @@ function App() {
       text: "JOIN",
       value: "JOIN",
     },
+    {
+      key: "INSERT",
+      text: "INSERT",
+      value: "INSERT",
+    },
+    {
+      key: "DELETE",
+      text: "DELETE",
+      value: "DELETE",
+    },
   ];
 
   const languages = [
@@ -265,18 +283,6 @@ function App() {
         <Form className="form">
           <Form.Group widths="equal">
             <Form.Field>
-              <label className="label">Select Language</label>
-              <Dropdown
-                placeholder="Select Language"
-                fluid
-                selection
-                options={languages}
-                onChange={(e, data) => {
-                  setLanguageSequence(data.value as string);
-                }}
-              />{" "}
-            </Form.Field>
-            <Form.Field>
               <label className="label">Query Type</label>
               <Dropdown
                 placeholder="Select Type"
@@ -299,6 +305,18 @@ function App() {
                   setIterations(parseInt(data.value));
                 }}
               />
+            </Form.Field>
+            <Form.Field>
+              <label className="label">Select Language</label>
+              <Dropdown
+                placeholder="Select Language"
+                fluid
+                selection
+                options={languages}
+                onChange={(e, data) => {
+                  setLanguageSequence(data.value as string);
+                }}
+              />{" "}
             </Form.Field>
           </Form.Group>
         </Form>
