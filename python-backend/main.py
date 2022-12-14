@@ -1,5 +1,5 @@
 import mysql.connector
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 import time
 
@@ -16,29 +16,36 @@ mydb = mysql.connector.connect(
 mydbcursor = mydb.cursor()
 
 
+# def getCursor():
+#     return mydb.cursor()
+
+
 def executeSelect(cursor=mydbcursor):
     cursor.execute("SELECT * FROM shipper")
     queryResult = cursor.fetchall()
+    # cursor.close()
     print(queryResult)
-    data = jsonify(queryResult)
-    print(data)
+    # data = jsonify(queryResult)
+    return queryResult
 
 
 @app.route('/python/all-shippers', methods=['GET'])
 def requesting():
-    # mydbcursor = mydb.cursor()
+    iterations = request.args.get('iteration')
+    print(iterations)
+    returnData = []
+    mydbcursor = mydb.cursor()
 
-    # mycursor = mydb.cursor()
-    # mycursor.ex
-    for x in range(3):
+    for x in range(int(iterations)):
         mydbcursor = executeSelect()
+        returnData.append(mydbcursor)
         # mycursor.execute("SELECT * FROM shipper")
         # queryResult = mycursor.fetchall()
         # print(queryResult)
         # print(data)
         # mycursor.close()
 
-    return "hi"
+    return jsonify(returnData)
 
 
 @app.route('/python/count-employee-id', methods=['GET'])

@@ -8,7 +8,7 @@ interface timeObjDef {
 }
 
 function App() {
-  const [active, setActive] = useState(false);
+  // const [active, setActive] = useState(false);
   const [pythonFetchTime, setPythonFetchTime] = useState({});
   const [jsFetchTime, setJSFetchTime] = useState({});
   const [goFetchTime, setGOFetchTime] = useState({});
@@ -67,7 +67,7 @@ function App() {
             if (response.ok) return response.json();
           })
           .then((data) => {
-            let end = performance.now();
+            // let end = performance.now();
             // setJSFetchTime(end - start);
             // console.log("end of js fetch: ", end - start);
             console.log(data);
@@ -81,45 +81,42 @@ function App() {
     });
   };
 
-  const delayFetch = (url: string, options: any) =>
-    new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(fetch(url, options));
-      }, options.delay);
-    });
+  // const delayFetch = (url: string, options: any) =>
+  //   new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       resolve(fetch(url, options));
+  //     }, options.delay);
+  //   });
 
   const getAllShippersPython = (iterations: number) => {
-    let timeObj: timeObjDef = {};
+    // let timeObj: timeObjDef = {};
 
-    let fetches = [];
+    // let fetches = [];
     let start = performance.now();
     console.log(start);
 
-    for (let i = 0; i < iterations; i++) {
-      fetches.push(
-        delayFetch("http://127.0.0.1:8080/python/all-shippers", {
-          delay: 1000,
-          method: "GET",
-        })
-          .then((response: any) => {
-            console.log(response);
-            if (response.ok) return response.json();
-          })
-          .then((data) => {
-            let end = performance.now();
-            // setPythonFetchTime(end - start);
-            // console.log("end of python fetch: ", end - start);
-            console.log(data);
-          })
-      );
-      // setTimeout(() => "Waiting", 2000);
-      // sett
-    }
-
-    Promise.all(fetches).then(() => {
-      setPythonFetchTime(timeObj);
-      console.log(JSON.stringify(timeObj));
-    });
+    fetch(
+      "http://127.0.0.1:8080/python/all-shippers?" +
+        new URLSearchParams({
+          iteration: iterations.toString(),
+        }),
+      {
+        method: "GET",
+      }
+    )
+      .then((response: any) => {
+        console.log(response);
+        if (response.ok) return response.json();
+      })
+      .then((data) => {
+        let end = performance.now();
+        setPythonFetchTime(end - start);
+        // console.log("end of python fetch: ", end - start);
+        // setPythonFetchTime(timeObj);
+        //   console.log(JSON.stringify(timeObj));
+        console.log(data);
+      });
+    // });
   };
 
   const getCountNumEmployeeIdJS = (iterations: number) => {
@@ -201,7 +198,7 @@ function App() {
             if (response.ok) return response.json();
           })
           .then((data) => {
-            let end = performance.now();
+            // let end = performance.now();
             // setGOFetchTime(end - start);
           })
       );
@@ -283,6 +280,18 @@ function App() {
         <Form className="form">
           <Form.Group widths="equal">
             <Form.Field>
+              <label className="label">Select Language</label>
+              <Dropdown
+                placeholder="Select Language"
+                fluid
+                selection
+                options={languages}
+                onChange={(e, data) => {
+                  setLanguageSequence(data.value as string);
+                }}
+              />{" "}
+            </Form.Field>
+            <Form.Field>
               <label className="label">Query Type</label>
               <Dropdown
                 placeholder="Select Type"
@@ -305,18 +314,6 @@ function App() {
                   setIterations(parseInt(data.value));
                 }}
               />
-            </Form.Field>
-            <Form.Field>
-              <label className="label">Select Language</label>
-              <Dropdown
-                placeholder="Select Language"
-                fluid
-                selection
-                options={languages}
-                onChange={(e, data) => {
-                  setLanguageSequence(data.value as string);
-                }}
-              />{" "}
             </Form.Field>
           </Form.Group>
         </Form>

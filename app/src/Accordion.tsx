@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function AccordionExampleFluid(props: Props) {
-  const { jsTime, goTime, pythonTime } = props;
+  // const { jsTime, goTime, pythonTime } = props;
 
   const [activeIndex, setActiveIndex] = useState(-1);
 
