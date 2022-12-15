@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button, Dropdown, Form, Input } from "semantic-ui-react";
-import Accordion from "./Accordion";
 import "./App.css";
 
 interface timeObjDef {
@@ -9,7 +8,7 @@ interface timeObjDef {
 
 function App() {
   // const [active, setActive] = useState(false);
-  const [pythonFetchTime, setPythonFetchTime] = useState({});
+  const [pythonFetchTime, setPythonFetchTime] = useState(0);
   const [jsFetchTime, setJSFetchTime] = useState({});
   const [goFetchTime, setGOFetchTime] = useState({});
 
@@ -182,32 +181,27 @@ function App() {
   };
 
   const getCountNumEmployeeIdPython = (iterations: number) => {
-    let timeObj: timeObjDef = {};
-
-    let fetches = [];
     let start = performance.now();
     console.log(start);
 
-    for (let i = 0; i < iterations; i++) {
-      fetches.push(
-        fetch("http://127.0.0.1:8080/python/count-employee-id", {
-          method: "GET",
-        })
-          .then((response) => {
-            console.log(response);
-            if (response.ok) return response.json();
-          })
-          .then((data) => {
-            // let end = performance.now();
-            // setGOFetchTime(end - start);
-          })
-      );
-    }
-
-    Promise.all(fetches).then(() => {
-      setPythonFetchTime(timeObj);
-      console.log(JSON.stringify(timeObj));
-    });
+    fetch(
+      "http://127.0.0.1:8080/python/count-employee-id?" +
+        new URLSearchParams({
+          iteration: iterations.toString(),
+        }),
+      {
+        method: "GET",
+      }
+    )
+      .then((response) => {
+        console.log(response);
+        if (response.ok) return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        // let end = performance.now();
+        // setGOFetchTime(end - start);
+      });
   };
 
   const conditionCallRoute = () => {
@@ -322,11 +316,11 @@ function App() {
         </Button>
       </div>
       <div className="accordion">
-        <Accordion
+        {/* <Accordion
           jsTime={jsFetchTime}
           goTime={goFetchTime}
           pythonTime={pythonFetchTime}
-        />
+        /> */}
       </div>
     </div>
   );

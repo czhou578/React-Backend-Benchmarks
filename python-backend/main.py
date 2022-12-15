@@ -16,10 +16,6 @@ mydb = mysql.connector.connect(
 mydbcursor = mydb.cursor()
 
 
-# def getCursor():
-#     return mydb.cursor()
-
-
 def executeSelect(cursor=mydbcursor):
     cursor.execute("SELECT * FROM shipper")
     queryResult = cursor.fetchall()
@@ -29,12 +25,21 @@ def executeSelect(cursor=mydbcursor):
     return queryResult
 
 
+def executeJoin(cursor=mydbcursor):
+    cursor.execute(
+        "select count(employeeId) from employeeterritory natural join region natural join territory group by regionId")
+    queryResult = cursor.fetchall()
+    print(queryResult)
+
+    return queryResult
+
+
 @app.route('/python/all-shippers', methods=['GET'])
 def requesting():
     iterations = request.args.get('iteration')
     print(iterations)
     returnData = []
-    mydbcursor = mydb.cursor()
+    # mydbcursor = mydb.cursor()
 
     for x in range(int(iterations)):
         mydbcursor = executeSelect()
@@ -50,14 +55,14 @@ def requesting():
 
 @app.route('/python/count-employee-id', methods=['GET'])
 def processCountEmployeeId():
+    iterations = request.args.get('iteration')
+    print(iterations)
+    returnData = []
 
-    # mycursor = mydb.cursor()
-    mycursor.execute(
-        "select count(employeeId) from employeeterritory natural join region natural join territory group by regionId")
-    queryResult = mycursor.fetchall()
-    data = jsonify(queryResult)
-    mycursor.close()
-    return data
+    for x in range(int(iterations)):
+        fetchedData = executeJoin()
+        returnData.append(fetchedData)
+    return jsonify(returnData)
 
 
 if __name__ == '__main__':
