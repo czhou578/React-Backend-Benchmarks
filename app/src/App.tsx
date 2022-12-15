@@ -1,26 +1,25 @@
 import { useState } from "react";
 import { Button, Dropdown, Form, Input } from "semantic-ui-react";
+import Accordion from "./Accordion";
 import "./App.css";
 
-interface timeObjDef {
-  [key: string]: number;
-}
+// interface nestedData {}
 
 function App() {
-  // const [active, setActive] = useState(false);
   const [pythonFetchTime, setPythonFetchTime] = useState(0);
-  const [jsFetchTime, setJSFetchTime] = useState({});
-  const [goFetchTime, setGOFetchTime] = useState({});
+  const [jsFetchTime, setJSFetchTime] = useState(0);
+  const [goFetchTime, setGOFetchTime] = useState(0);
+
+  const [pythonFetchedData, setPythonFetchedData] = useState(null);
+  const [jsFetchedData, setJSFetchedData] = useState<any>([]);
+  const [goFetchedData, setGOFetchedData] = useState<any>([]);
 
   const [languageSequence, setLanguageSequence] = useState("");
   const [queryType, setQueryType] = useState("");
   const [iterations, setIterations] = useState(0);
 
   const getAllShippersGo = (iterations: number) => {
-    let timeObj: timeObjDef = {};
-
     let start = performance.now();
-    console.log(start);
 
     let fetches = [];
 
@@ -31,68 +30,45 @@ function App() {
           headers: {
             "Content-Type": "application/json",
           },
+        }).then((response) => {
+          console.log(response);
+          if (response.ok) return response.json();
         })
-          .then((response) => {
-            console.log(response);
-            if (response.ok) return response.json();
-          })
-          .then((data) => {
-            let end = performance.now();
-            timeObj[(i + 1).toString()] = end - start;
-          })
       );
     }
 
-    Promise.all(fetches).then(() => {
-      setGOFetchTime(timeObj);
-      console.log(JSON.stringify(timeObj));
+    Promise.all(fetches).then((data) => {
+      console.log(data);
+      let end = performance.now();
+      setGOFetchTime(end - start);
+      setGOFetchedData(data);
     });
   };
 
   const getAllShippersJS = (iterations: number) => {
-    let timeObj: timeObjDef = {};
-
     let fetches = [];
     let start = performance.now();
-    console.log(start);
 
     for (let i = 0; i < iterations; i++) {
       fetches.push(
         fetch("http://127.0.0.1:3001/northwind/javascript/all-shippers", {
           method: "GET",
+        }).then((response) => {
+          console.log(response);
+          if (response.ok) return response.json();
         })
-          .then((response) => {
-            console.log(response);
-            if (response.ok) return response.json();
-          })
-          .then((data) => {
-            // let end = performance.now();
-            // setJSFetchTime(end - start);
-            // console.log("end of js fetch: ", end - start);
-            console.log(data);
-          })
       );
     }
 
-    Promise.all(fetches).then(() => {
-      setJSFetchTime(timeObj);
-      console.log(JSON.stringify(timeObj));
+    Promise.all(fetches).then((data) => {
+      let end = performance.now();
+      setJSFetchTime(end - start);
+      setJSFetchedData(data);
     });
   };
 
-  // const delayFetch = (url: string, options: any) =>
-  //   new Promise((resolve) => {
-  //     setTimeout(() => {
-  //       resolve(fetch(url, options));
-  //     }, options.delay);
-  //   });
-
   const getAllShippersPython = (iterations: number) => {
-    // let timeObj: timeObjDef = {};
-
-    // let fetches = [];
     let start = performance.now();
-    console.log(start);
 
     fetch(
       "http://127.0.0.1:8080/python/all-shippers?" +
@@ -110,48 +86,32 @@ function App() {
       .then((data) => {
         let end = performance.now();
         setPythonFetchTime(end - start);
-        // console.log("end of python fetch: ", end - start);
-        // setPythonFetchTime(timeObj);
-        //   console.log(JSON.stringify(timeObj));
-        console.log(data);
+        setPythonFetchedData(data);
       });
-    // });
   };
 
   const getCountNumEmployeeIdJS = (iterations: number) => {
-    let timeObj: timeObjDef = {};
-
     let fetches = [];
     let start = performance.now();
-    console.log(start);
 
     for (let i = 0; i < iterations; i++) {
       fetches.push(
         fetch("http://127.0.0.1:3001/northwind/javascript/num-employeeId", {
           method: "GET",
+        }).then((response) => {
+          if (response.ok) return response.json();
         })
-          .then((response) => {
-            console.log(response);
-            if (response.ok) return response.json();
-          })
-          .then((data) => {
-            let end = performance.now();
-            setJSFetchTime(end - start);
-            console.log("end of js fetch: ", end - start);
-            console.log(data);
-          })
       );
     }
 
-    Promise.all(fetches).then(() => {
-      setJSFetchTime(timeObj);
-      console.log(JSON.stringify(timeObj));
+    Promise.all(fetches).then((data) => {
+      let end = performance.now();
+      setJSFetchTime(end - start);
+      setJSFetchedData(data);
     });
   };
 
   const getCountNumEmployeeIdGo = (iterations: number) => {
-    let timeObj: timeObjDef = {};
-
     let fetches = [];
     let start = performance.now();
     console.log(start);
@@ -160,23 +120,17 @@ function App() {
       fetches.push(
         fetch("http://127.0.0.1:8083/go/count-employee-id", {
           method: "GET",
+        }).then((response) => {
+          if (response.ok) return response.json();
         })
-          .then((response) => {
-            console.log(response);
-            if (response.ok) return response.json();
-          })
-          .then((data) => {
-            let end = performance.now();
-            setGOFetchTime(end - start);
-            console.log("end of go fetch: ", end - start);
-            console.log(data);
-          })
       );
     }
 
-    Promise.all(fetches).then(() => {
-      setGOFetchTime(timeObj);
-      console.log(JSON.stringify(timeObj));
+    Promise.all(fetches).then((data) => {
+      let end = performance.now();
+
+      setGOFetchedData(data);
+      setGOFetchTime(end - start);
     });
   };
 
@@ -194,13 +148,12 @@ function App() {
       }
     )
       .then((response) => {
-        console.log(response);
         if (response.ok) return response.json();
       })
       .then((data) => {
-        console.log(data);
-        // let end = performance.now();
-        // setGOFetchTime(end - start);
+        let end = performance.now();
+        setPythonFetchedData(data);
+        setPythonFetchTime(end - start);
       });
   };
 
@@ -316,11 +269,14 @@ function App() {
         </Button>
       </div>
       <div className="accordion">
-        {/* <Accordion
+        <Accordion
           jsTime={jsFetchTime}
+          jsData={jsFetchedData}
           goTime={goFetchTime}
+          goData={goFetchedData}
           pythonTime={pythonFetchTime}
-        /> */}
+          pythonData={pythonFetchedData}
+        />
       </div>
     </div>
   );

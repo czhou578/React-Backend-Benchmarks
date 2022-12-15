@@ -2,13 +2,16 @@ import { useState } from "react";
 import { Accordion, Icon } from "semantic-ui-react";
 
 interface Props {
-  jsTime: object;
-  goTime: object;
-  pythonTime: object;
+  jsTime: number;
+  jsData: object;
+  goTime: number;
+  goData: object;
+  pythonTime: number;
+  pythonData: any;
 }
 
 export default function AccordionExampleFluid(props: Props) {
-  // const { jsTime, goTime, pythonTime } = props;
+  const { jsTime, goTime, pythonTime, pythonData, goData, jsData } = props;
 
   const [activeIndex, setActiveIndex] = useState(-1);
 
@@ -25,7 +28,11 @@ export default function AccordionExampleFluid(props: Props) {
         JavaScript Run
       </Accordion.Title>
       <Accordion.Content active={activeIndex === 0}>
-        {/* <h2>{jsTime.length != 0 ? jsTime : null}</h2> */}
+        <h2>Completion Time</h2>
+        <h3>{jsTime} ms</h3>
+        <h2 style={{ marginBottom: "20px" }}>Data Returned</h2>
+
+        {jsData ? JSON.stringify(jsData, null, 2) : null}
       </Accordion.Content>
 
       <Accordion.Title
@@ -39,11 +46,11 @@ export default function AccordionExampleFluid(props: Props) {
         Golang Run
       </Accordion.Title>
       <Accordion.Content active={activeIndex === 1}>
-        <p>
-          There are many breeds of dogs. Each breed varies in size and
-          temperament. Owners often select a breed of dog that they find to be
-          compatible with their own lifestyle and desires from a companion.
-        </p>
+        <h2>Completion Time</h2>
+        <h3>{goTime} ms</h3>
+        <h2 style={{ marginBottom: "20px" }}>Data Returned</h2>
+
+        {goData ? JSON.stringify(goData, null, 2) : null}
       </Accordion.Content>
 
       <Accordion.Title
@@ -57,17 +64,10 @@ export default function AccordionExampleFluid(props: Props) {
         Python Run
       </Accordion.Title>
       <Accordion.Content active={activeIndex === 2}>
-        <p>
-          Three common ways for a prospective owner to acquire a dog is from pet
-          shops, private owners, or shelters.
-        </p>
-        <p>
-          A pet shop may be the most convenient way to buy a dog. Buying a dog
-          from a private owner allows you to assess the pedigree and upbringing
-          of your dog before choosing to take it home. Lastly, finding your dog
-          from a shelter, helps give a good home to a dog who may not find one
-          so readily.
-        </p>
+        <h2>Completion Time</h2>
+        <h3>{pythonTime} ms</h3>
+        <h2 style={{ marginBottom: "20px" }}>Data Returned</h2>
+        {pythonData ? JSON.stringify(pythonData, null, 2) : null}
       </Accordion.Content>
     </Accordion>
   );
