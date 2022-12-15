@@ -37,7 +37,6 @@ func getEmployeeIDCount(c *gin.Context) {
 	if countId == nil || len(countId) == 0 {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
-		// c.Writer.Header().Set("Content-Type", "application/json; charset=utf-8")
 		c.IndentedJSON(http.StatusOK, countId)
 	}
 }

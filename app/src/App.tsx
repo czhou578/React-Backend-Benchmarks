@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Button, Dropdown, Form, Input } from "semantic-ui-react";
-import Accordion from "./Accordion";
+import AccordionExampleFluid from "./Accordion";
 import "./App.css";
-
-// interface nestedData {}
 
 function App() {
   const [pythonFetchTime, setPythonFetchTime] = useState(0);
@@ -269,7 +267,7 @@ function App() {
         </Button>
       </div>
       <div className="accordion">
-        <Accordion
+        <AccordionExampleFluid
           jsTime={jsFetchTime}
           jsData={jsFetchedData}
           goTime={goFetchTime}
