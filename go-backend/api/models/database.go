@@ -92,3 +92,17 @@ func GetCountNumId() []EmployeeId {
 	return countEmployees
 
 }
+
+// func newCategory() {
+// 	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
+
+// 	if err != nil {
+// 		fmt.Println("error", err.Error())
+// 		// return nil
+// 	}
+
+// 	defer db.Close()
+
+// 	results, err := db.Exec()
+
+// }

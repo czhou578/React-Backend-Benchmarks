@@ -2,7 +2,7 @@ name: Deploy
 on:
   push:
     branches:
-      - '*'
+      - "*"
 jobs:
   app:
     runs-on: ubuntu-latest
@@ -10,14 +10,14 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: '17.1'
+          node-version: "17.1"
           cache: "npm"
           cache-dependency-path: app/package-lock.json
       - run: npm install
         working-directory: app
       - run: npm run build --if-present
         working-directory: app
-        
+
   prettier:
     name: Prettier
     runs-on: ubuntu-latest
@@ -33,4 +33,14 @@ jobs:
       - name: Prettier
         run: npx prettier --check
         working-directory: app
-        
+
+  golint:
+    name: Lint Go
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          working-directory: go-backend
