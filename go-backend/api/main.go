@@ -15,7 +15,7 @@ func main() {
 
 	router.GET("/go/all-shippers", getAllShippers)
 	router.GET("/go/count-employee-id", getEmployeeIDCount)
-	router.PUT("/go/new-category")
+	router.PUT("/go/new-category", newCategory)
 	router.Run("localhost:8083")
 }
 
@@ -43,5 +43,11 @@ func getEmployeeIDCount(c *gin.Context) {
 }
 
 func newCategory(c *gin.Context) {
+	lastId := models.NewCategoryInsert()
 
+	if lastId == 0 {
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.IndentedJSON(http.StatusOK, lastId)
+	}
 }

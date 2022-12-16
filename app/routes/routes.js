@@ -37,4 +37,16 @@ router.get("/javascript/num-employeeId", (req, res) => {
   });
 });
 
+router.get("/javascript/new-category", (req, res) => {
+  let sql =
+    "Insert into category (categoryName, description, picture) values ('Seafood', 'tasty', null)";
+
+  database.query(sql, (error, result) => {
+    if (error) throw error;
+
+    res.send({ resp: "Data successfully inserted!" });
+    console.log("success!");
+  });
+});
+
 module.exports = router;

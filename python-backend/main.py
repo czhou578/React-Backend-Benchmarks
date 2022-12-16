@@ -19,9 +19,7 @@ mydbcursor = mydb.cursor()
 def executeSelect(cursor=mydbcursor):
     cursor.execute("SELECT * FROM shipper")
     queryResult = cursor.fetchall()
-    # cursor.close()
     print(queryResult)
-    # data = jsonify(queryResult)
     return queryResult
 
 
@@ -32,6 +30,11 @@ def executeJoin(cursor=mydbcursor):
     print(queryResult)
 
     return queryResult
+
+
+def executeInsert(cursor=mydbcursor):
+    cursor.execute(
+        "Insert into category (categoryName, description, picture) values ('Seafood', 'tasty', null)")
 
 
 @app.route('/python/all-shippers', methods=['GET'])
@@ -62,6 +65,18 @@ def processCountEmployeeId():
     for x in range(int(iterations)):
         fetchedData = executeJoin()
         returnData.append(fetchedData)
+    return jsonify(returnData)
+
+
+@app.route('/python/new-category', methods=['PUT'])
+def addNewCategory():
+    iterations = request.args.get('iteration')
+    returnData = "Data successfully inserted!"
+
+    for x in range(int(iterations)):
+        execute = executeInsert()
+        print(execute)
+
     return jsonify(returnData)
 
 

@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -93,16 +94,27 @@ func GetCountNumId() []EmployeeId {
 
 }
 
-// func newCategory() {
-// 	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
+func NewCategoryInsert() int64 {
+	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
 
-// 	if err != nil {
-// 		fmt.Println("error", err.Error())
-// 		// return nil
-// 	}
+	if err != nil {
+		log.Fatal(err)
+	}
 
-// 	defer db.Close()
+	defer db.Close()
 
-// 	results, err := db.Exec()
+	results, err := db.Exec("Insert into category (categoryName, description, picture) values ('Seafood', 'tasty', null)")
 
-// }
+	if err != nil {
+		panic(err.Error())
+	}
+
+	lastId, err := results.LastInsertId()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("The last inserted row id: %d\n", lastId)
+	return lastId
+}

@@ -155,6 +155,74 @@ function App() {
       });
   };
 
+  const insertNewCategoryGo = (iterations: number) => {
+    let fetches = [];
+    let start = performance.now();
+    console.log(start);
+
+    for (let i = 0; i < iterations; i++) {
+      fetches.push(
+        fetch("http://127.0.0.1:8083/go/new-category", {
+          method: "PUT",
+        }).then((response) => {
+          if (response.ok) return response.json();
+        })
+      );
+    }
+
+    Promise.all(fetches).then((data) => {
+      console.log(data);
+      let end = performance.now();
+
+      setGOFetchedData(data);
+      setGOFetchTime(end - start);
+    });
+  };
+
+  const insertNewCategoryPython = (iterations: number) => {
+    let start = performance.now();
+    console.log(start);
+
+    fetch(
+      "http://127.0.0.1:8080/python/new-category?" +
+        new URLSearchParams({
+          iteration: iterations.toString(),
+        }),
+      {
+        method: "PUT",
+      }
+    )
+      .then((response) => {
+        if (response.ok) return response.json();
+      })
+      .then((data) => {
+        let end = performance.now();
+        setPythonFetchedData(data);
+        setPythonFetchTime(end - start);
+      });
+  };
+
+  const insertNewCategoryJS = (iterations: number) => {
+    let fetches = [];
+    let start = performance.now();
+
+    for (let i = 0; i < iterations; i++) {
+      fetches.push(
+        fetch("http://127.0.0.1:3001/northwind/javascript/new-category", {
+          method: "GET",
+        }).then((response) => {
+          if (response.ok) return response.json();
+        })
+      );
+    }
+
+    Promise.all(fetches).then((data) => {
+      let end = performance.now();
+      setJSFetchTime(end - start);
+      setJSFetchedData(data);
+    });
+  };
+
   const conditionCallRoute = () => {
     if (languageSequence === "Go" && queryType === "GET")
       getAllShippersGo(iterations);
@@ -168,6 +236,12 @@ function App() {
       getCountNumEmployeeIdJS(iterations);
     else if (languageSequence === "Python" && queryType === "JOIN")
       getCountNumEmployeeIdPython(iterations);
+    else if (languageSequence === "Go" && queryType === "INSERT")
+      insertNewCategoryGo(iterations);
+    else if (languageSequence === "Python" && queryType === "INSERT")
+      insertNewCategoryPython(iterations);
+    else if (languageSequence === "JavaScript" && queryType === "INSERT")
+      insertNewCategoryJS(iterations);
   };
 
   const options = [
