@@ -3,6 +3,7 @@ package main
 import (
 	"api/models"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gin-contrib/cors"
@@ -16,7 +17,11 @@ func main() {
 	router.GET("/go/all-shippers", getAllShippers)
 	router.GET("/go/count-employee-id", getEmployeeIDCount)
 	router.PUT("/go/new-category", newCategory)
-	router.Run("localhost:8083")
+	err := router.Run("localhost:8083")
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func getAllShippers(c *gin.Context) {
@@ -36,10 +41,6 @@ func getEmployeeIDCount(c *gin.Context) {
 	countId := models.GetCountNumId()
 
 	c.IndentedJSON(http.StatusOK, countId)
-	// if countId == nil || len(countId) == 0 {
-	// 	c.AbortWithStatus(http.StatusNotFound)
-	// } else {
-	// }
 }
 
 func newCategory(c *gin.Context) {
