@@ -43,4 +43,4 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          working-directory: go-backend
+          working-directory: go-backend/api
