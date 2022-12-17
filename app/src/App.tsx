@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Dropdown, Form, Input } from "semantic-ui-react";
+import { Button, Dropdown, Form, Icon, Input } from "semantic-ui-react";
 import AccordionExampleFluid from "./Accordion";
 import "./App.css";
 
@@ -15,6 +15,8 @@ function App() {
   const [languageSequence, setLanguageSequence] = useState("");
   const [queryType, setQueryType] = useState("");
   const [iterations, setIterations] = useState(0);
+
+  const [completedRun, setCompletedRun] = useState("");
 
   const getAllShippersGo = (iterations: number) => {
     let start = performance.now();
@@ -41,6 +43,8 @@ function App() {
       setGOFetchTime(end - start);
       setGOFetchedData(data);
     });
+
+    setCompletedRun("Completed!");
   };
 
   const getAllShippersJS = (iterations: number) => {
@@ -63,6 +67,8 @@ function App() {
       setJSFetchTime(end - start);
       setJSFetchedData(data);
     });
+
+    setCompletedRun("Completed!");
   };
 
   const getAllShippersPython = (iterations: number) => {
@@ -86,6 +92,8 @@ function App() {
         setPythonFetchTime(end - start);
         setPythonFetchedData(data);
       });
+
+    setCompletedRun("Completed!");
   };
 
   const getCountNumEmployeeIdJS = (iterations: number) => {
@@ -107,6 +115,8 @@ function App() {
       setJSFetchTime(end - start);
       setJSFetchedData(data);
     });
+
+    setCompletedRun("Completed!");
   };
 
   const getCountNumEmployeeIdGo = (iterations: number) => {
@@ -130,6 +140,8 @@ function App() {
       setGOFetchedData(data);
       setGOFetchTime(end - start);
     });
+
+    setCompletedRun("Completed!");
   };
 
   const getCountNumEmployeeIdPython = (iterations: number) => {
@@ -153,6 +165,8 @@ function App() {
         setPythonFetchedData(data);
         setPythonFetchTime(end - start);
       });
+
+    setCompletedRun("Completed!");
   };
 
   const insertNewCategoryGo = (iterations: number) => {
@@ -177,6 +191,8 @@ function App() {
       setGOFetchedData(data);
       setGOFetchTime(end - start);
     });
+
+    setCompletedRun("Completed!");
   };
 
   const insertNewCategoryPython = (iterations: number) => {
@@ -200,6 +216,8 @@ function App() {
         setPythonFetchedData(data);
         setPythonFetchTime(end - start);
       });
+
+    setCompletedRun("Completed!");
   };
 
   const insertNewCategoryJS = (iterations: number) => {
@@ -221,6 +239,8 @@ function App() {
       setJSFetchTime(end - start);
       setJSFetchedData(data);
     });
+
+    setCompletedRun("Completed!");
   };
 
   const conditionCallRoute = () => {
@@ -242,6 +262,28 @@ function App() {
       insertNewCategoryPython(iterations);
     else if (languageSequence === "JavaScript" && queryType === "INSERT")
       insertNewCategoryJS(iterations);
+    else if (
+      languageSequence === "JavaScript, Go, Python" &&
+      queryType === "GET"
+    ) {
+      getAllShippersJS(iterations);
+      getAllShippersGo(iterations);
+      getAllShippersPython(iterations);
+    } else if (
+      languageSequence === "JavaScript, Go, Python" &&
+      queryType === "JOIN"
+    ) {
+      getCountNumEmployeeIdJS(iterations);
+      getCountNumEmployeeIdGo(iterations);
+      getCountNumEmployeeIdPython(iterations);
+    } else if (
+      languageSequence === "JavaScript, Go, Python" &&
+      queryType === "INSERT"
+    ) {
+      insertNewCategoryJS(iterations);
+      insertNewCategoryGo(iterations);
+      insertNewCategoryPython(iterations);
+    }
   };
 
   const options = [
@@ -305,7 +347,7 @@ function App() {
                 fluid
                 selection
                 options={languages}
-                onChange={(e, data) => {
+                onChange={(_, data) => {
                   setLanguageSequence(data.value as string);
                 }}
               />{" "}
@@ -317,7 +359,7 @@ function App() {
                 fluid
                 selection
                 options={options}
-                onChange={(e, data) => {
+                onChange={(_, data) => {
                   setQueryType(data.value as string);
                 }}
               />
@@ -329,18 +371,38 @@ function App() {
                 placeholder={0}
                 type="number"
                 id="reps1"
-                onChange={(e, data) => {
+                onChange={(_, data) => {
                   setIterations(parseInt(data.value));
                 }}
               />
             </Form.Field>
           </Form.Group>
         </Form>
-        <Button positive onClick={() => conditionCallRoute()}>
+        <Button
+          positive
+          onClick={() => {
+            setCompletedRun("");
+            setTimeout(() => {
+              conditionCallRoute();
+            }, 500);
+          }}
+        >
           Run Queries
         </Button>
       </div>
       <div className="accordion">
+        {completedRun !== "" ? (
+          <div>
+            <span
+              style={{ color: "white", fontSize: "20px", paddingTop: "10px" }}
+            >
+              {completedRun}
+            </span>
+            <span style={{ marginLeft: "20px" }}>
+              <Icon name="check" size="huge" color="green" />
+            </span>
+          </div>
+        ) : null}
         <AccordionExampleFluid
           jsTime={jsFetchTime}
           jsData={jsFetchedData}
