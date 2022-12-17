@@ -85,5 +85,16 @@ def addNewCategory():
     return jsonify(returnData)
 
 
+@app.route('/python/update-customer', methods=['PUT'])
+def updateCustomer():
+    iterations = request.args.get('iteration')
+    returnData = "Data successfully inserted!"
+
+    for x in range(int(iterations)):
+        data = executeUpdate()
+
+    return jsonify("Data Inserted!")
+
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080)

@@ -49,4 +49,15 @@ router.get("/javascript/new-category", (req, res) => {
   });
 });
 
+router.put("/javascript/update-customer", (req, res) => {
+  let sql = "Update product set productName = 'Product 1' where productId = 55";
+
+  database.query(sql, (error, result) => {
+    if (error) throw error;
+
+    res.send({ resp: "Data successfully Updated!" });
+    console.log("success!");
+  });
+});
+
 module.exports = router;

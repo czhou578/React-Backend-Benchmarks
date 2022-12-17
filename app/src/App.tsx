@@ -21,16 +21,20 @@ function App() {
   const getGoRoute = "http://127.0.0.1:8083/go/all-shippers";
   const insertGoRoute = "http://127.0.0.1:8083/go/new-category";
   const joinGoRoute = "http://127.0.0.1:8083/go/count-employee-id";
+  const updateGoRoute = "http://127.0.0.1:8083/go/update-customer";
 
   const getJSRoute = "http://127.0.0.1:3001/northwind/javascript/all-shippers";
   const joinJSRoute =
     "http://127.0.0.1:3001/northwind/javascript/num-employeeId";
   const insertJSRoute =
     "http://127.0.0.1:3001/northwind/javascript/new-category";
+  const updateJSRoute =
+    "http://127.0.0.1:3001/northwind/javascript/update-customer";
 
   const getPythonRoute = "http://127.0.0.1:8080/python/all-shippers?";
   const joinPythonRoute = "http://127.0.0.1:8080/python/count-employee-id?";
   const insertPythonRoute = "http://127.0.0.1:8080/python/new-category?";
+  const updatePythonRoute = "http://127.0.0.1:8080/python/update-customer?";
 
   const goRouteWrapper = (
     iterations: number,
@@ -145,6 +149,12 @@ function App() {
       pythonRouteWrapper(iterations, insertPythonRoute, "POST");
     else if (languageSequence === "JavaScript" && queryType === "INSERT")
       jsRouteWrapper(iterations, insertJSRoute, "GET");
+    else if (languageSequence === "Go" && queryType === "UPDATE")
+      goRouteWrapper(iterations, updateGoRoute, "PUT");
+    else if (languageSequence === "JavaScript" && queryType === "UPDATE")
+      jsRouteWrapper(iterations, updateJSRoute, "PUT");
+    else if (languageSequence === "Python" && queryType === "UPDATE")
+      pythonRouteWrapper(iterations, updatePythonRoute, "PUT");
     else if (
       languageSequence === "JavaScript, Go, Python" &&
       queryType === "GET"
