@@ -118,3 +118,27 @@ func NewCategoryInsert() int64 {
 	fmt.Printf("The last inserted row id: %d\n", lastId)
 	return lastId
 }
+
+func UpdateCustomer() int64 {
+	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer db.Close()
+
+	results, err := db.Exec("Update product set productName = 'Product 1' where productId = 55")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	lastId, err := results.RowsAffected()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return lastId
+}

@@ -18,15 +18,33 @@ function App() {
 
   const [completedRun, setCompletedRun] = useState("");
 
-  const getAllShippersGo = (iterations: number) => {
+  const getGoRoute = "http://127.0.0.1:8083/go/all-shippers";
+  const insertGoRoute = "http://127.0.0.1:8083/go/new-category";
+  const joinGoRoute = "http://127.0.0.1:8083/go/count-employee-id";
+
+  const getJSRoute = "http://127.0.0.1:3001/northwind/javascript/all-shippers";
+  const joinJSRoute =
+    "http://127.0.0.1:3001/northwind/javascript/num-employeeId";
+  const insertJSRoute =
+    "http://127.0.0.1:3001/northwind/javascript/new-category";
+
+  const getPythonRoute = "http://127.0.0.1:8080/python/all-shippers?";
+  const joinPythonRoute = "http://127.0.0.1:8080/python/count-employee-id?";
+  const insertPythonRoute = "http://127.0.0.1:8080/python/new-category?";
+
+  const goRouteWrapper = (
+    iterations: number,
+    routeURL: string,
+    method: string
+  ) => {
     let start = performance.now();
 
     let fetches = [];
 
     for (let i = 0; i < iterations; i++) {
       fetches.push(
-        fetch("http://127.0.0.1:8083/go/all-shippers", {
-          method: "GET",
+        fetch(routeURL, {
+          method: method,
           headers: {
             "Content-Type": "application/json",
           },
@@ -47,14 +65,22 @@ function App() {
     setCompletedRun("Completed!");
   };
 
-  const getAllShippersJS = (iterations: number) => {
-    let fetches = [];
+  const jsRouteWrapper = (
+    iterations: number,
+    routeURL: string,
+    method: string
+  ) => {
     let start = performance.now();
+
+    let fetches = [];
 
     for (let i = 0; i < iterations; i++) {
       fetches.push(
-        fetch("http://127.0.0.1:3001/northwind/javascript/all-shippers", {
-          method: "GET",
+        fetch(routeURL, {
+          method: method,
+          headers: {
+            "Content-Type": "application/json",
+          },
         }).then((response) => {
           console.log(response);
           if (response.ok) return response.json();
@@ -71,16 +97,20 @@ function App() {
     setCompletedRun("Completed!");
   };
 
-  const getAllShippersPython = (iterations: number) => {
+  const pythonRouteWrapper = (
+    iterations: number,
+    routeURL: string,
+    method: string
+  ) => {
     let start = performance.now();
 
     fetch(
-      "http://127.0.0.1:8080/python/all-shippers?" +
+      routeURL +
         new URLSearchParams({
           iteration: iterations.toString(),
         }),
       {
-        method: "GET",
+        method: method,
       }
     )
       .then((response: any) => {
@@ -96,193 +126,46 @@ function App() {
     setCompletedRun("Completed!");
   };
 
-  const getCountNumEmployeeIdJS = (iterations: number) => {
-    let fetches = [];
-    let start = performance.now();
-
-    for (let i = 0; i < iterations; i++) {
-      fetches.push(
-        fetch("http://127.0.0.1:3001/northwind/javascript/num-employeeId", {
-          method: "GET",
-        }).then((response) => {
-          if (response.ok) return response.json();
-        })
-      );
-    }
-
-    Promise.all(fetches).then((data) => {
-      let end = performance.now();
-      setJSFetchTime(end - start);
-      setJSFetchedData(data);
-    });
-
-    setCompletedRun("Completed!");
-  };
-
-  const getCountNumEmployeeIdGo = (iterations: number) => {
-    let fetches = [];
-    let start = performance.now();
-    console.log(start);
-
-    for (let i = 0; i < iterations; i++) {
-      fetches.push(
-        fetch("http://127.0.0.1:8083/go/count-employee-id", {
-          method: "GET",
-        }).then((response) => {
-          if (response.ok) return response.json();
-        })
-      );
-    }
-
-    Promise.all(fetches).then((data) => {
-      let end = performance.now();
-
-      setGOFetchedData(data);
-      setGOFetchTime(end - start);
-    });
-
-    setCompletedRun("Completed!");
-  };
-
-  const getCountNumEmployeeIdPython = (iterations: number) => {
-    let start = performance.now();
-    console.log(start);
-
-    fetch(
-      "http://127.0.0.1:8080/python/count-employee-id?" +
-        new URLSearchParams({
-          iteration: iterations.toString(),
-        }),
-      {
-        method: "GET",
-      }
-    )
-      .then((response) => {
-        if (response.ok) return response.json();
-      })
-      .then((data) => {
-        let end = performance.now();
-        setPythonFetchedData(data);
-        setPythonFetchTime(end - start);
-      });
-
-    setCompletedRun("Completed!");
-  };
-
-  const insertNewCategoryGo = (iterations: number) => {
-    let fetches = [];
-    let start = performance.now();
-    console.log(start);
-
-    for (let i = 0; i < iterations; i++) {
-      fetches.push(
-        fetch("http://127.0.0.1:8083/go/new-category", {
-          method: "PUT",
-        }).then((response) => {
-          if (response.ok) return response.json();
-        })
-      );
-    }
-
-    Promise.all(fetches).then((data) => {
-      console.log(data);
-      let end = performance.now();
-
-      setGOFetchedData(data);
-      setGOFetchTime(end - start);
-    });
-
-    setCompletedRun("Completed!");
-  };
-
-  const insertNewCategoryPython = (iterations: number) => {
-    let start = performance.now();
-    console.log(start);
-
-    fetch(
-      "http://127.0.0.1:8080/python/new-category?" +
-        new URLSearchParams({
-          iteration: iterations.toString(),
-        }),
-      {
-        method: "PUT",
-      }
-    )
-      .then((response) => {
-        if (response.ok) return response.json();
-      })
-      .then((data) => {
-        let end = performance.now();
-        setPythonFetchedData(data);
-        setPythonFetchTime(end - start);
-      });
-
-    setCompletedRun("Completed!");
-  };
-
-  const insertNewCategoryJS = (iterations: number) => {
-    let fetches = [];
-    let start = performance.now();
-
-    for (let i = 0; i < iterations; i++) {
-      fetches.push(
-        fetch("http://127.0.0.1:3001/northwind/javascript/new-category", {
-          method: "GET",
-        }).then((response) => {
-          if (response.ok) return response.json();
-        })
-      );
-    }
-
-    Promise.all(fetches).then((data) => {
-      let end = performance.now();
-      setJSFetchTime(end - start);
-      setJSFetchedData(data);
-    });
-
-    setCompletedRun("Completed!");
-  };
-
   const conditionCallRoute = () => {
     if (languageSequence === "Go" && queryType === "GET")
-      getAllShippersGo(iterations);
+      goRouteWrapper(iterations, getGoRoute, "GET");
     else if (languageSequence === "JavaScript" && queryType === "GET")
-      getAllShippersJS(iterations);
+      jsRouteWrapper(iterations, getJSRoute, "GET");
     else if (languageSequence === "Python" && queryType === "GET")
-      getAllShippersPython(iterations);
+      pythonRouteWrapper(iterations, getPythonRoute, "GET");
     else if (languageSequence === "Go" && queryType === "JOIN")
-      getCountNumEmployeeIdGo(iterations);
+      goRouteWrapper(iterations, joinGoRoute, "GET");
     else if (languageSequence === "JavaScript" && queryType === "JOIN")
-      getCountNumEmployeeIdJS(iterations);
+      jsRouteWrapper(iterations, joinJSRoute, "GET");
     else if (languageSequence === "Python" && queryType === "JOIN")
-      getCountNumEmployeeIdPython(iterations);
+      pythonRouteWrapper(iterations, joinPythonRoute, "GET");
     else if (languageSequence === "Go" && queryType === "INSERT")
-      insertNewCategoryGo(iterations);
+      goRouteWrapper(iterations, insertGoRoute, "POST");
     else if (languageSequence === "Python" && queryType === "INSERT")
-      insertNewCategoryPython(iterations);
+      pythonRouteWrapper(iterations, insertPythonRoute, "POST");
     else if (languageSequence === "JavaScript" && queryType === "INSERT")
-      insertNewCategoryJS(iterations);
+      jsRouteWrapper(iterations, insertJSRoute, "GET");
     else if (
       languageSequence === "JavaScript, Go, Python" &&
       queryType === "GET"
     ) {
-      getAllShippersJS(iterations);
-      getAllShippersGo(iterations);
-      getAllShippersPython(iterations);
+      jsRouteWrapper(iterations, getJSRoute, "GET");
+      goRouteWrapper(iterations, getGoRoute, "GET");
+      pythonRouteWrapper(iterations, getPythonRoute, "GET");
     } else if (
       languageSequence === "JavaScript, Go, Python" &&
       queryType === "JOIN"
     ) {
-      getCountNumEmployeeIdJS(iterations);
-      getCountNumEmployeeIdGo(iterations);
-      getCountNumEmployeeIdPython(iterations);
+      jsRouteWrapper(iterations, joinJSRoute, "GET");
+      goRouteWrapper(iterations, joinGoRoute, "GET");
+      pythonRouteWrapper(iterations, joinPythonRoute, "GET");
     } else if (
       languageSequence === "JavaScript, Go, Python" &&
       queryType === "INSERT"
     ) {
-      insertNewCategoryJS(iterations);
-      insertNewCategoryGo(iterations);
-      insertNewCategoryPython(iterations);
+      jsRouteWrapper(iterations, insertJSRoute, "GET");
+      goRouteWrapper(iterations, insertGoRoute, "GET");
+      pythonRouteWrapper(iterations, joinPythonRoute, "GET");
     }
   };
 
@@ -301,6 +184,11 @@ function App() {
       key: "INSERT",
       text: "INSERT",
       value: "INSERT",
+    },
+    {
+      key: "UPDATE",
+      text: "UPDATE",
+      value: "UPDATE",
     },
     {
       key: "DELETE",

@@ -16,7 +16,8 @@ func main() {
 
 	router.GET("/go/all-shippers", getAllShippers)
 	router.GET("/go/count-employee-id", getEmployeeIDCount)
-	router.PUT("/go/new-category", newCategory)
+	router.POST("/go/new-category", newCategory)
+	router.PUT("/go/update-customer", UpdateCustomer)
 	err := router.Run("localhost:8083")
 
 	if err != nil {
@@ -30,11 +31,6 @@ func getAllShippers(c *gin.Context) {
 
 	c.Writer.Header().Set("Content-Type", "application/json; charset=utf-8")
 	c.IndentedJSON(http.StatusOK, shippers)
-	// if shippers == nil || len(shippers) == 0 {
-	// 	c.AbortWithStatus(http.StatusNotFound)
-	// } else {
-	// 	// fmt.Print(c.IndentedJSON(http.StatusOK, shippers))
-	// }
 }
 
 func getEmployeeIDCount(c *gin.Context) {
@@ -47,8 +43,10 @@ func newCategory(c *gin.Context) {
 	lastId := models.NewCategoryInsert()
 
 	c.IndentedJSON(http.StatusOK, lastId)
-	// if lastId == 0 {
-	// 	c.AbortWithStatus(http.StatusNotFound)
-	// } else {
-	// }
+}
+
+func UpdateCustomer(c *gin.Context) {
+	updatedId := models.UpdateCustomer()
+
+	c.IndentedJSON(http.StatusOK, updatedId)
 }

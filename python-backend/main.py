@@ -37,6 +37,11 @@ def executeInsert(cursor=mydbcursor):
         "Insert into category (categoryName, description, picture) values ('Seafood', 'tasty', null)")
 
 
+def executeUpdate(cursor=mydbcursor):
+    cursor.execute(
+        "Update product set productName = 'Product 1' where productId = 55")
+
+
 @app.route('/python/all-shippers', methods=['GET'])
 def requesting():
     iterations = request.args.get('iteration')
@@ -68,7 +73,7 @@ def processCountEmployeeId():
     return jsonify(returnData)
 
 
-@app.route('/python/new-category', methods=['PUT'])
+@app.route('/python/new-category', methods=['POST'])
 def addNewCategory():
     iterations = request.args.get('iteration')
     returnData = "Data successfully inserted!"
