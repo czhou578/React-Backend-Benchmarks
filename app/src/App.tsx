@@ -22,6 +22,7 @@ function App() {
   const insertGoRoute = "http://127.0.0.1:8083/go/new-category";
   const joinGoRoute = "http://127.0.0.1:8083/go/count-employee-id";
   const updateGoRoute = "http://127.0.0.1:8083/go/update-customer";
+  const deleteGoRoute = "http://127.0.0.1:8083/go/delete-salesorder";
 
   const getJSRoute = "http://127.0.0.1:3001/northwind/javascript/all-shippers";
   const joinJSRoute =
@@ -30,11 +31,14 @@ function App() {
     "http://127.0.0.1:3001/northwind/javascript/new-category";
   const updateJSRoute =
     "http://127.0.0.1:3001/northwind/javascript/update-customer";
+  const deleteJSRoute =
+    "http://127.0.0.1:3001/northwind/javascript/delete-salesorder";
 
   const getPythonRoute = "http://127.0.0.1:8080/python/all-shippers?";
   const joinPythonRoute = "http://127.0.0.1:8080/python/count-employee-id?";
   const insertPythonRoute = "http://127.0.0.1:8080/python/new-category?";
   const updatePythonRoute = "http://127.0.0.1:8080/python/update-customer?";
+  const deletePythonRoute = "http://127.0.0.1:8080/python/delete-salesorder?";
 
   const goRouteWrapper = (
     iterations: number,
@@ -155,6 +159,12 @@ function App() {
       jsRouteWrapper(iterations, updateJSRoute, "PUT");
     else if (languageSequence === "Python" && queryType === "UPDATE")
       pythonRouteWrapper(iterations, updatePythonRoute, "PUT");
+    else if (languageSequence === "Go" && queryType === "DELETE")
+      goRouteWrapper(iterations, deleteGoRoute, "DELETE");
+    else if (languageSequence === "JavaScript" && queryType === "DELETE")
+      jsRouteWrapper(iterations, deleteJSRoute, "DELETE");
+    else if (languageSequence === "Python" && queryType === "DELETE")
+      pythonRouteWrapper(iterations, deletePythonRoute, "DELETE");
     else if (
       languageSequence === "JavaScript, Go, Python" &&
       queryType === "GET"
@@ -268,7 +278,6 @@ function App() {
                 fluid
                 placeholder={0}
                 type="number"
-                id="reps1"
                 onChange={(_, data) => {
                   setIterations(parseInt(data.value));
                 }}

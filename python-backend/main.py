@@ -42,6 +42,10 @@ def executeUpdate(cursor=mydbcursor):
         "Update product set productName = 'Product 1' where productId = 55")
 
 
+def executeDelete(cursor=mydbcursor):
+    cursor.execute("delete from salesorder order by orderId desc limit 1")
+
+
 @app.route('/python/all-shippers', methods=['GET'])
 def requesting():
     iterations = request.args.get('iteration')
@@ -88,12 +92,21 @@ def addNewCategory():
 @app.route('/python/update-customer', methods=['PUT'])
 def updateCustomer():
     iterations = request.args.get('iteration')
-    returnData = "Data successfully inserted!"
 
     for x in range(int(iterations)):
         data = executeUpdate()
 
     return jsonify("Data Inserted!")
+
+
+@app.route("/python/delete-salesorder", methods=['DELETE'])
+def deleteSalesorder():
+    iterations = request.args.get('iteration')
+
+    for x in range(int(iterations)):
+        data = executeDelete()
+
+    return jsonify("Data deleted!")
 
 
 if __name__ == '__main__':

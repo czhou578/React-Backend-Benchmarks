@@ -18,6 +18,7 @@ func main() {
 	router.GET("/go/count-employee-id", getEmployeeIDCount)
 	router.POST("/go/new-category", newCategory)
 	router.PUT("/go/update-customer", UpdateCustomer)
+	router.DELETE("/go/delete-salesorder", DeleteSalesorder)
 	err := router.Run("localhost:8083")
 
 	if err != nil {
@@ -47,6 +48,13 @@ func newCategory(c *gin.Context) {
 
 func UpdateCustomer(c *gin.Context) {
 	updatedId := models.UpdateCustomer()
+
+	c.IndentedJSON(http.StatusOK, updatedId)
+}
+
+func DeleteSalesorder(c *gin.Context) {
+	updatedId := models.DeleteSalesOrder()
+	print(updatedId)
 
 	c.IndentedJSON(http.StatusOK, updatedId)
 }

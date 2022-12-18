@@ -142,3 +142,27 @@ func UpdateCustomer() int64 {
 
 	return lastId
 }
+
+func DeleteSalesOrder() int64 {
+	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer db.Close()
+
+	results, err := db.Exec("delete from salesorder order by orderId desc limit 1")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	lastId, err := results.RowsAffected()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return lastId
+}

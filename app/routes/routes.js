@@ -60,4 +60,15 @@ router.put("/javascript/update-customer", (req, res) => {
   });
 });
 
+router.delete("/javascript/delete-salesorder", (req, res) => {
+  let sql = "delete from salesorder order by orderId desc limit 1";
+
+  database.query(sql, (error, result) => {
+    if (error) throw error;
+
+    res.send({ resp: "Data successfully deleted!" });
+    console.log("success!");
+  });
+});
+
 module.exports = router;
