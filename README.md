@@ -15,21 +15,18 @@ In the first terminal, navigate to the app folder and run
 
 ```
 npm run server
-
 ```
 
 In the second terminal, navigate to the go-backend/api folder and run
 
 ```
 go run .
-
 ```
 
 In the third terminal, navigate to the python-backend folder and run
 
 ```
 py ./main.py
-
 ```
 
 You will now be able to make requests as you please. 
