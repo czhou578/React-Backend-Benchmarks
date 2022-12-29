@@ -1,7 +1,7 @@
 .App {
   text-align: center;
   background-color: #282c34;
-  height: 120vh;
+  height: fit-content;
 }
 
 .App-header {
@@ -32,4 +32,5 @@
   margin: 0 auto;
   margin-top: 40px !important;
   width: 80% !important;
+  padding-bottom: 20px !important;
 }
