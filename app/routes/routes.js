@@ -9,7 +9,7 @@ router.get("/javascript/all-customers", (req, res) => {
   database.query(sql, (error, result) => {
     if (error) throw error;
 
-    res.send(result);
+    res.status(200).send(result);
     console.log("success!");
   });
 });
@@ -20,7 +20,7 @@ router.get("/javascript/all-shippers", (req, res) => {
   database.query(sql, (error, result) => {
     if (error) throw error;
 
-    res.send(result);
+    res.status(200).send(result);
     console.log("success!");
   });
 });
@@ -32,7 +32,7 @@ router.get("/javascript/num-employeeId", (req, res) => {
   database.query(sql, (error, result) => {
     if (error) throw error;
 
-    res.send(result);
+    res.status(200).send(result);
     console.log("success!");
   });
 });
@@ -44,7 +44,7 @@ router.get("/javascript/new-category", (req, res) => {
   database.query(sql, (error, result) => {
     if (error) throw error;
 
-    res.send({ resp: "Data successfully inserted!" });
+    res.status(200).send({ resp: "Data successfully inserted!" });
     console.log("success!");
   });
 });
@@ -55,7 +55,7 @@ router.put("/javascript/update-customer", (req, res) => {
   database.query(sql, (error, result) => {
     if (error) throw error;
 
-    res.send({ resp: "Data successfully Updated!" });
+    res.status(200).send({ resp: "Data successfully Updated!" });
     console.log("success!");
   });
 });
@@ -66,7 +66,7 @@ router.delete("/javascript/delete-salesorder", (req, res) => {
   database.query(sql, (error, result) => {
     if (error) throw error;
 
-    res.send({ resp: "Data successfully deleted!" });
+    res.status(200).send({ resp: "Data successfully deleted!" });
     console.log("success!");
   });
 });
