@@ -3,7 +3,7 @@ const database = require("../database");
 
 const router = express.Router();
 
-router.get("/javascript/all-customers", (req, res) => {
+router.get("/javascript/all-customers", (_, res) => {
   let sql = "SELECT * FROM customers";
 
   database.query(sql, (error, result) => {
@@ -14,7 +14,7 @@ router.get("/javascript/all-customers", (req, res) => {
   });
 });
 
-router.get("/javascript/all-shippers", (req, res) => {
+router.get("/javascript/all-shippers", (_, res) => {
   let sql = "SELECT * FROM shipper";
 
   database.query(sql, (error, result) => {
@@ -25,7 +25,7 @@ router.get("/javascript/all-shippers", (req, res) => {
   });
 });
 
-router.get("/javascript/num-employeeId", (req, res) => {
+router.get("/javascript/num-employeeId", (_, res) => {
   let sql =
     "select count(employeeId) from employeeterritory natural join region natural join territory group by regionId";
 
@@ -37,11 +37,11 @@ router.get("/javascript/num-employeeId", (req, res) => {
   });
 });
 
-router.get("/javascript/new-category", (req, res) => {
+router.get("/javascript/new-category", (_, res) => {
   let sql =
     "Insert into category (categoryName, description, picture) values ('Seafood', 'tasty', null)";
 
-  database.query(sql, (error, result) => {
+  database.query(sql, (error, _) => {
     if (error) throw error;
 
     res.status(200).send({ resp: "Data successfully inserted!" });
@@ -49,10 +49,10 @@ router.get("/javascript/new-category", (req, res) => {
   });
 });
 
-router.put("/javascript/update-customer", (req, res) => {
+router.put("/javascript/update-customer", (_, res) => {
   let sql = "Update product set productName = 'Product 1' where productId = 55";
 
-  database.query(sql, (error, result) => {
+  database.query(sql, (error, _) => {
     if (error) throw error;
 
     res.status(200).send({ resp: "Data successfully Updated!" });
@@ -60,10 +60,10 @@ router.put("/javascript/update-customer", (req, res) => {
   });
 });
 
-router.delete("/javascript/delete-salesorder", (req, res) => {
+router.delete("/javascript/delete-salesorder", (_, res) => {
   let sql = "delete from salesorder order by orderId desc limit 1";
 
-  database.query(sql, (error, result) => {
+  database.query(sql, (error, _) => {
     if (error) throw error;
 
     res.status(200).send({ resp: "Data successfully deleted!" });
