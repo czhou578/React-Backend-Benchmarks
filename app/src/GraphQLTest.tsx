@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form, Dropdown, Button, Input, Icon } from "semantic-ui-react";
 import AccordionExampleFluid from "./Accordion";
 
@@ -16,6 +16,16 @@ export const GraphQLTest: React.FC = ({}) => {
   const [iterations, setIterations] = useState(0);
 
   const [completedRun, setCompletedRun] = useState("");
+  const getJsRoute = "http://127.0.0.1:3001/spacex/graphql";
+
+  useEffect(() => {
+    console.log("adsfadf");
+    fetch(getJsRoute).then((response) => {
+      console.log(response);
+      if (response.ok) return response.json();
+    });
+  }, []);
+
   const options = [
     {
       key: "GET",

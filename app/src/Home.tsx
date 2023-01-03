@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Dropdown, Form, Icon, Input } from "semantic-ui-react";
 import AccordionExampleFluid from "./Accordion";
-import "./App.css";
+import "./Home.css";
 
 function App() {
   const [pythonFetchTime, setPythonFetchTime] = useState(0);
