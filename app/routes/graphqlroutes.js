@@ -16,9 +16,9 @@ graphqlRouter.get("/graphql", async (request, response) => {
                 ceo
                 }
                 roadster {
-                    apoapsis_au
-            s}
-          }
+                    apoapsis_aus
+                }
+            }
         `
     })
     }

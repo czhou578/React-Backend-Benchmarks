@@ -1,7 +1,7 @@
 import mysql.connector
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
-import time
+import requests
 
 app = Flask(__name__)
 CORS(app)
@@ -9,7 +9,7 @@ CORS(app)
 mydb = mysql.connector.connect(
     host="127.0.0.1",
     user="root",
-    password="password",
+    # password="password",
     database="northwind"
 )
 
@@ -107,6 +107,25 @@ def deleteSalesorder():
         data = executeDelete()
 
     return jsonify("Data deleted!")
+
+
+@app.route("/python/graphql/get", methods=['GET'])
+def getCeoRoadster():
+    body = """
+        query ExampleQuery {
+        company {
+            ceo
+        }
+        roadster {
+            apoapsis_au
+        }
+        }
+
+    """
+    url = 'https://api.spacex.land/graphql/'
+    r = requests.post(url=url, json={"query": body})
+    print(r.text)
+    return r.text
 
 
 if __name__ == '__main__':
