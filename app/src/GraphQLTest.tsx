@@ -18,24 +18,26 @@ export const GraphQLTest: React.FC = ({}) => {
   const [completedRun, setCompletedRun] = useState("");
   const getJsRoute = "http://127.0.0.1:3001/spacex/graphql";
   const getPythonRoute = "http://127.0.0.1:8080/python/graphql/get";
-
-  // useEffect(() => {
-  //   console.log("adsfadf");
-  //   fetch(getJsRoute).then((response) => {
-  //     if (response.ok) return response.json();
-  //   });
-  // }, []);
-
+  const getGoRoute = "http://127.0.0.1:8083/go/graphql/get";
   useEffect(() => {
     console.log("adsfadf");
-    fetch(getPythonRoute)
+    fetch(getGoRoute)
       .then((response) => {
         if (response.ok) return response.json();
       })
-      .then((res) => {
-        console.log(res);
-      });
+      .then((res) => console.log(res));
   }, []);
+
+  // useEffect(() => {
+  //   console.log("adsfadf");
+  //   fetch(getPythonRoute)
+  //     .then((response) => {
+  //       if (response.ok) return response.json();
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //     });
+  // }, []);
 
   const options = [
     {

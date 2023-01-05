@@ -2,9 +2,13 @@ package main
 
 import (
 	"api/models"
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -16,6 +20,7 @@ func main() {
 
 	router.GET("/go/all-shippers", getAllShippers)
 	router.GET("/go/count-employee-id", getEmployeeIDCount)
+	router.GET("/go/graphql/get", getCEORoadster)
 	router.POST("/go/new-category", newCategory)
 	router.PUT("/go/update-customer", UpdateCustomer)
 	router.DELETE("/go/delete-salesorder", DeleteSalesorder)
@@ -57,4 +62,32 @@ func DeleteSalesorder(c *gin.Context) {
 	print(updatedId)
 
 	c.IndentedJSON(http.StatusOK, updatedId)
+}
+
+func getCEORoadster(c *gin.Context) {
+	jsonData := map[string]string{
+		"query": `
+			{
+				company {
+					ceo
+				}
+				roadster {
+					apoapsis_au
+				}	
+			}
+		`,
+	}
+	jsonValue, _ := json.Marshal(jsonData)
+	request, _ := http.NewRequest("POST", "https://api.spacex.land/graphql/", bytes.NewBuffer(jsonValue))
+	client := &http.Client{Timeout: time.Second * 10}
+	request.Header.Set("Content-Type", "application/json")
+	response, err := client.Do(request)
+	if err != nil {
+		fmt.Printf("HTTP request failed")
+	}
+
+	data, _ := ioutil.ReadAll(response.Body)
+	// fmt.Printf(string(data))
+	c.IndentedJSON(http.StatusOK, string(data))
+
 }
