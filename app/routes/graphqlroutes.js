@@ -27,7 +27,7 @@ graphqlRouter.get("/graphql", async (request, response) => {
         .then(res => res.json())
         .then((result) => {
             console.log(result)
-            response.send(result.body)
+            response.send(result)
         })
 })
 

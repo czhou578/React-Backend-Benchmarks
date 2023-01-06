@@ -111,6 +111,9 @@ def deleteSalesorder():
 
 @app.route("/python/graphql/get", methods=['GET'])
 def getCeoRoadster():
+    iterations = request.args.get('iteration')
+    result = []
+
     body = """
         query ExampleQuery {
         company {
@@ -123,9 +126,13 @@ def getCeoRoadster():
 
     """
     url = 'https://api.spacex.land/graphql/'
-    r = requests.post(url=url, json={"query": body})
+
+    for x in range(int(iterations)):
+        r = requests.post(url=url, json={"query": body})
+        result.append(r.text)
+
     print(r.text)
-    return r.text
+    return result
 
 
 if __name__ == '__main__':
