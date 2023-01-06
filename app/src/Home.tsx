@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Dropdown, Form, Icon, Input } from "semantic-ui-react";
 import AccordionExampleFluid from "./Accordion";
-import "./Home.css";
+import { Link } from "react-router-dom";
 
 function App() {
   const [pythonFetchTime, setPythonFetchTime] = useState(0);
@@ -244,6 +244,9 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Test API Response Times</h1>
+        <Link to={"/graphql"}>
+          <h3>Test API Response Times (GraphQL)</h3>
+        </Link>
       </header>
       <div className="form-wrapper">
         <Form className="form">

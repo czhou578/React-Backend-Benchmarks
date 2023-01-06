@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Form, Dropdown, Button, Input, Icon } from "semantic-ui-react";
 import AccordionExampleFluid from "./Accordion";
 
-export const GraphQLTest: React.FC = ({}) => {
+export default function GraphQLTest() {
   const [pythonFetchTime, setPythonFetchTime] = useState(0);
   const [jsFetchTime, setJSFetchTime] = useState(0);
   const [goFetchTime, setGOFetchTime] = useState(0);
@@ -19,6 +19,7 @@ export const GraphQLTest: React.FC = ({}) => {
   const getJsRoute = "http://127.0.0.1:3001/spacex/graphql";
   const getPythonRoute = "http://127.0.0.1:8080/python/graphql/get";
   const getGoRoute = "http://127.0.0.1:8083/go/graphql/get";
+
   useEffect(() => {
     console.log("adsfadf");
     fetch(getGoRoute)
@@ -70,6 +71,39 @@ export const GraphQLTest: React.FC = ({}) => {
     },
   ];
 
+  const goRouteWrapper = (
+    iterations: number,
+    routeURL: string,
+    method: string
+  ) => {
+    let start = performance.now();
+
+    let fetches = [];
+
+    for (let i = 0; i < iterations; i++) {
+      fetches.push(
+        fetch(routeURL, {
+          method: method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((response) => {
+          console.log(response);
+          if (response.ok) return response.json();
+        })
+      );
+    }
+
+    Promise.all(fetches).then((data) => {
+      console.log(data);
+      let end = performance.now();
+      setGOFetchTime(end - start);
+      setGOFetchedData(data);
+    });
+
+    setCompletedRun("Completed!");
+  };
+
   const jsRouteWrapper = (
     iterations: number,
     routeURL: string,
@@ -102,17 +136,46 @@ export const GraphQLTest: React.FC = ({}) => {
     setCompletedRun("Completed!");
   };
 
-  // const conditionCallRoute = () => {
-  //   if (languageSequence === "Go" && queryType === "GET")
-  //     goRouteWrapper(iterations, getGoRoute, "GET");
-  //   else if (languageSequence === "JavaScript" && queryType === "GET")
-  //     jsRouteWrapper(iterations, getJSRoute, "GET");
-  //   else if (languageSequence === "Python" && queryType === "GET")
-  //     pythonRouteWrapper(iterations, getPythonRoute, "GET");
-  // };
+  const pythonRouteWrapper = (
+    iterations: number,
+    routeURL: string,
+    method: string
+  ) => {
+    let start = performance.now();
+
+    fetch(
+      routeURL +
+        new URLSearchParams({
+          iteration: iterations.toString(),
+        }),
+      {
+        method: method,
+      }
+    )
+      .then((response: any) => {
+        console.log(response);
+        if (response.ok) return response.json();
+      })
+      .then((data) => {
+        let end = performance.now();
+        setPythonFetchTime(end - start);
+        setPythonFetchedData(data);
+      });
+
+    setCompletedRun("Completed!");
+  };
+
+  const conditionCallRoute = () => {
+    if (languageSequence === "Go" && queryType === "GET")
+      goRouteWrapper(iterations, getGoRoute, "GET");
+    if (languageSequence === "JavaScript" && queryType === "GET")
+      jsRouteWrapper(iterations, getJsRoute, "GET");
+    else if (languageSequence === "Python" && queryType === "GET")
+      pythonRouteWrapper(iterations, getPythonRoute, "GET");
+  };
 
   return (
-    <div>
+    <div style={{ backgroundColor: "#282c34", height: "110vh" }}>
       <header className="App-header">
         <h1>Test API Response Times (GraphQL)</h1>
       </header>
@@ -161,7 +224,7 @@ export const GraphQLTest: React.FC = ({}) => {
           onClick={() => {
             setCompletedRun("");
             setTimeout(() => {
-              // conditionCallRoute();
+              conditionCallRoute();
             }, 500);
           }}
         >
@@ -170,7 +233,7 @@ export const GraphQLTest: React.FC = ({}) => {
       </div>
       <div className="accordion">
         {completedRun !== "" ? (
-          <div>
+          <div style={{ marginLeft: "100px" }}>
             <span
               style={{ color: "white", fontSize: "20px", paddingTop: "10px" }}
             >
@@ -192,4 +255,4 @@ export const GraphQLTest: React.FC = ({}) => {
       </div>
     </div>
   );
-};
+}
