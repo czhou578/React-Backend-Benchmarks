@@ -168,6 +168,9 @@ export default function GraphQLTest() {
       <header className="App-header">
         <h1>Test API Response Times (GraphQL)</h1>
       </header>
+      <div>
+        <h3 className="App-header">This is using the SpaceX GraphQL API</h3>
+      </div>
       <div className="form-wrapper">
         <Form className="form">
           <Form.Group widths="equal">

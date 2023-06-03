@@ -3,7 +3,7 @@ import { Button, Dropdown, Form, Icon, Input } from "semantic-ui-react";
 import AccordionExampleFluid from "./Accordion";
 import { Link } from "react-router-dom";
 
-function App() {
+function PostGresTest() {
   const [pythonFetchTime, setPythonFetchTime] = useState(0);
   const [jsFetchTime, setJSFetchTime] = useState(0);
   const [goFetchTime, setGOFetchTime] = useState(0);
@@ -343,4 +343,4 @@ function App() {
   );
 }
 
-export default App;
+export default PostGresTest;
