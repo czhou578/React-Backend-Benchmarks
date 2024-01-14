@@ -86,7 +86,7 @@ func getCEORoadster(c *gin.Context) {
 		fmt.Printf("HTTP request failed")
 	}
 
-	data, _ := ioutil.ReadAll(response.Body)
+	data, _ := io.ReadAll(response.Body)
 	// fmt.Printf(string(data))
 	c.IndentedJSON(http.StatusOK, string(data))
 
