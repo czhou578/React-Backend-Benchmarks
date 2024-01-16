@@ -1,0 +1,17 @@
+.container {
+  background-color: black;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form {
+  margin-left: 15%;
+  width: 70%;
+}
+
+.header {
+  font-size: 36px;
+  color: aqua;
+}

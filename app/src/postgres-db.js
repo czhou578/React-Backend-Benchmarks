@@ -1,12 +1,12 @@
-const {Client} = require('pg')
+const { Client } = require("pg");
 
 const credentials = {
-    user: "root",
-    host: "localhost",
-    database: "DVD",
-    password: "podium218",
-    port: 5432,
-  };
+  user: "root",
+  host: "localhost",
+  database: "DVD",
+  password: "podium218",
+  port: 5432,
+};
 
-  const client = new Client(credentials);
-  await client.connect();
+const client = new Client(credentials);
+await client.connect();
