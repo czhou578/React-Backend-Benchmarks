@@ -18,27 +18,27 @@ function App() {
 
   const [completedRun, setCompletedRun] = useState("");
 
-  const getGoRoute = "http://127.0.0.1:8083/go/all-shippers";
-  const insertGoRoute = "http://127.0.0.1:8083/go/new-category";
-  const joinGoRoute = "http://127.0.0.1:8083/go/count-employee-id";
-  const updateGoRoute = "http://127.0.0.1:8083/go/update-customer";
-  const deleteGoRoute = "http://127.0.0.1:8083/go/delete-salesorder";
+  const getGoRoute = "http://192.168.81.153:8083/go/all-shippers";
+  const insertGoRoute = "http://192.168.81.153:8083/go/new-category";
+  const joinGoRoute = "http://192.168.81.153:8083/go/count-employee-id";
+  const updateGoRoute = "http://192.168.81.153:8083/go/update-customer";
+  const deleteGoRoute = "http://192.168.81.153:8083/go/delete-salesorder";
 
-  const getJSRoute = "http://127.0.0.1:3001/northwind/javascript/all-shippers";
+  const getJSRoute = "http://192.168.81.153:3001/northwind/javascript/all-shippers";
   const joinJSRoute =
-    "http://127.0.0.1:3001/northwind/javascript/num-employeeId";
+    "http://192.168.81.153:3001/northwind/javascript/num-employeeId";
   const insertJSRoute =
-    "http://127.0.0.1:3001/northwind/javascript/new-category";
+    "http://192.168.81.153:3001/northwind/javascript/new-category";
   const updateJSRoute =
-    "http://127.0.0.1:3001/northwind/javascript/update-customer";
+    "http://192.168.81.153:3001/northwind/javascript/update-customer";
   const deleteJSRoute =
-    "http://127.0.0.1:3001/northwind/javascript/delete-salesorder";
+    "http://192.168.81.153:3001/northwind/javascript/delete-salesorder";
 
-  const getPythonRoute = "http://127.0.0.1:8080/python/all-shippers?";
-  const joinPythonRoute = "http://127.0.0.1:8080/python/count-employee-id?";
-  const insertPythonRoute = "http://127.0.0.1:8080/python/new-category?";
-  const updatePythonRoute = "http://127.0.0.1:8080/python/update-customer?";
-  const deletePythonRoute = "http://127.0.0.1:8080/python/delete-salesorder?";
+  const getPythonRoute = "http://192.168.81.153:8080/python/all-shippers?";
+  const joinPythonRoute = "http://192.168.81.153:8080/python/count-employee-id?";
+  const insertPythonRoute = "http://192.168.81.153:8080/python/new-category?";
+  const updatePythonRoute = "http://192.168.81.153:8080/python/update-customer?";
+  const deletePythonRoute = "http://192.168.81.153:8080/python/delete-salesorder?";
 
   const goRouteWrapper = (
     iterations: number,

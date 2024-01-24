@@ -24,7 +24,7 @@ func main() {
 	router.POST("/go/new-category", newCategory)
 	router.PUT("/go/update-customer", UpdateCustomer)
 	router.DELETE("/go/delete-salesorder", DeleteSalesorder)
-	err := router.Run("localhost:8083")
+	err := router.Run("192.168.81.153:8083")
 
 	if err != nil {
 		log.Fatal(err)

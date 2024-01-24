@@ -14,10 +14,10 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors());
 
-// database.connect((err) => {
-//   if (err) throw err;
-//   console.log("Database Connected!");
-// });
+database.connect((err) => {
+  if (err) throw err;
+  console.log("Database Connected!");
+});
 
 app.use("/northwind", router);
 app.use("/spacex", graphqlRouter);
