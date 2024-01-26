@@ -7,6 +7,7 @@ const router = express.Router();
 router.get("/javascript/all-customers", (_, res) => {
   let sql = "SELECT * FROM customers";
 
+
   database.query(sql, (error, result) => {
     if (error) throw error;
 
@@ -17,10 +18,13 @@ router.get("/javascript/all-customers", (_, res) => {
 
 router.get("/javascript/all-shippers", (_, res) => {
   let sql = "SELECT * FROM shipper";
+  let start = performance.now()
 
   database.query(sql, (error, result) => {
     if (error) throw error;
 
+    let end = performance.now()
+    console.log('query time is, ', end - start)
     res.status(200).send(result);
     console.log("success!");
   });
