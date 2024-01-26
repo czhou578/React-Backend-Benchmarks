@@ -9,24 +9,18 @@ the runs are displayed in the accordion on the frontend.
 
 I utilized the Microsoft Northwinds database to run queries on. The SQL file is provided.
 
-Open 3 terminals in your code editor. 
+Open 2 terminals. 
 
-In the first terminal, navigate to the app folder and run 
-
-```
-npm run server
-```
-
-In the second terminal, navigate to the go-backend/api folder and run
+In the first terminal, navigate to the root folder and run the frontend script 
 
 ```
-go run .
+./frontend_script.sh
 ```
 
-In the third terminal, navigate to the python-backend folder and run
+In the second terminal, navigate to the root folder and run the backend script
 
 ```
-py ./main.py
+./backend_script.sh
 ```
 
 You will now be able to make requests as you please. 
