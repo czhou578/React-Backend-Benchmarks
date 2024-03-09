@@ -1,0 +1,11 @@
+.container {
+  text-align: center;
+  background-color: #282c34;
+  height: 110vh;
+}
+
+.reqForm-wrapper {
+  margin: 0 auto;
+  width: 10%;
+  padding-top: 20px;
+}

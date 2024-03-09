@@ -1,10 +1,10 @@
 const express = require("express");
 const database = require("./database");
 const router = require("./routes/routes");
-const loginRouter = require("./routes/login")
+const loginRouter = require("./routes/login");
 const graphqlRouter = require("./routes/graphqlroutes");
 const bodyParser = require("body-parser");
-require('dotenv').config()
+require("dotenv").config();
 
 const cors = require("cors");
 
@@ -21,7 +21,7 @@ database.connect((err) => {
 
 app.use("/northwind", router);
 app.use("/spacex", graphqlRouter);
-app.use("/login", loginRouter)
+app.use("/login", loginRouter);
 
 app.listen(3001, () => {
   console.log("Server listening on Port 3001");

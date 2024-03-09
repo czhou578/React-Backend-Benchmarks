@@ -24,7 +24,8 @@ function App() {
   const updateGoRoute = "http://192.168.81.153:8083/go/update-customer";
   const deleteGoRoute = "http://192.168.81.153:8083/go/delete-salesorder";
 
-  const getJSRoute = "http://192.168.81.153:3001/northwind/javascript/all-shippers";
+  const getJSRoute =
+    "http://192.168.81.153:3001/northwind/javascript/all-shippers";
   const joinJSRoute =
     "http://192.168.81.153:3001/northwind/javascript/num-employeeId";
   const insertJSRoute =
@@ -35,10 +36,13 @@ function App() {
     "http://192.168.81.153:3001/northwind/javascript/delete-salesorder";
 
   const getPythonRoute = "http://192.168.81.153:8080/python/all-shippers?";
-  const joinPythonRoute = "http://192.168.81.153:8080/python/count-employee-id?";
+  const joinPythonRoute =
+    "http://192.168.81.153:8080/python/count-employee-id?";
   const insertPythonRoute = "http://192.168.81.153:8080/python/new-category?";
-  const updatePythonRoute = "http://192.168.81.153:8080/python/update-customer?";
-  const deletePythonRoute = "http://192.168.81.153:8080/python/delete-salesorder?";
+  const updatePythonRoute =
+    "http://192.168.81.153:8080/python/update-customer?";
+  const deletePythonRoute =
+    "http://192.168.81.153:8080/python/delete-salesorder?";
 
   const goRouteWrapper = (
     iterations: number,
@@ -246,6 +250,9 @@ function App() {
         <h1>Test API Response Times</h1>
         <Link to={"/graphql"}>
           <h3>Test API Response Times (GraphQL)</h3>
+        </Link>
+        <Link to={"/requests"}>
+          <h3>Test Fetch Response Time</h3>
         </Link>
       </header>
       <div style={{ color: "white", marginBottom: "10px" }}>
