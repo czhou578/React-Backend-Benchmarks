@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "DemoApplication",
+            "request": "launch",
+            "mainClass": "com.example.demo.DemoApplication",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
+            "name": "DemoApplication",
+            "request": "launch",
+            "mainClass": "DemoApplication",
+            "projectName": "accessing-data-mysql"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-AppApplication<app>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
