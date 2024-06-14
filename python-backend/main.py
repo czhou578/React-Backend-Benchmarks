@@ -1,6 +1,10 @@
 import mysql.connector
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
+from fetch import getData
+
+import subprocess
+
 import requests
 
 app = Flask(__name__)
@@ -56,11 +60,6 @@ def requesting():
     for x in range(int(iterations)):
         mydbcursor = executeSelect()
         returnData.append(mydbcursor)
-        # mycursor.execute("SELECT * FROM shipper")
-        # queryResult = mycursor.fetchall()
-        # print(queryResult)
-        # print(data)
-        # mycursor.close()
 
     return jsonify(returnData)
 
@@ -133,6 +132,10 @@ def getCeoRoadster():
 
     print(r.text)
     return result
+
+def requestPerson():
+    result = getData()
+    return result.stdout.decode('utf-8')
 
 
 if __name__ == '__main__':

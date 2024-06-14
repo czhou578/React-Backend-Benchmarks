@@ -251,9 +251,9 @@ function App() {
         <Link to={"/graphql"}>
           <h3>Test API Response Times (GraphQL)</h3>
         </Link>
-        <Link to={"/requests"}>
+        {/* <Link to={"/requests"}>
           <h3>Test Fetch Response Time</h3>
-        </Link>
+        </Link> */}
       </header>
       <div style={{ color: "white", marginBottom: "10px" }}>
         <h2>Queries being Run</h2>

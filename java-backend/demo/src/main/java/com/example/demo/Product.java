@@ -23,4 +23,10 @@ public class Product {
     private short unitsOnOrder;
     private short reorderLevel;
     private char discontinued;
+
+    // productName = 'Product 1'
+
+    public void setProductName(String name) {
+        this.productName = name;
+    }
 }

@@ -1,5 +1,5 @@
-package com.example.demo;
+// package com.example.demo;
 
-public class SalesOrder {
+// public class SalesOrder {
 
-}
+// }
