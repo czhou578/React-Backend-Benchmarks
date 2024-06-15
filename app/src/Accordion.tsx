@@ -7,10 +7,12 @@ interface Props {
   goData: object;
   pythonTime: number;
   pythonData: any;
+  javaTime: number;
+  javaData: object;
 }
 
 export default function AccordionExampleFluid(props: Props) {
-  const { jsTime, goTime, pythonTime, pythonData, goData, jsData } = props;
+  const { jsTime, goTime, pythonTime, javaTime, pythonData, goData, jsData, javaData } = props;
 
   const panels = [
     {
@@ -49,6 +51,18 @@ export default function AccordionExampleFluid(props: Props) {
         </Accordion.Content>
       ),
     },
+    {
+      title: "Java Run",
+      content: (
+        <Accordion.Content>
+          <h2>Completion Time</h2>
+          <h3>{javaTime} ms</h3>
+          <h2 style={{ marginBottom: "20px" }}>Data Returned</h2>
+
+          {javaData ? JSON.stringify(javaData, null, 2) : null}
+        </Accordion.Content>
+      ),
+    },    
   ];
 
   return (

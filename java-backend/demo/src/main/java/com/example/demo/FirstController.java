@@ -27,23 +27,23 @@ public class FirstController {
     @Autowired
     private SalesRepo sales;
 
-    @GetMapping("/category")
+    @GetMapping("/java/category")
     public Category insertCategory() {
         return categoryService.insertAndSaveCategory();
     }
 
-    @GetMapping("/shippers")
+    @GetMapping("/java/shippers")
     public List<Shipper> allShippers() {
         return shippers.findAll();
     }
 
-    @RequestMapping(value = "/product", method = { RequestMethod.GET, RequestMethod.PUT })
+    @RequestMapping(value = "/java/product", method = { RequestMethod.GET, RequestMethod.PUT })
     public Product updateProductName() {
 
         return productService.updateProduct();
     }
 
-    @GetMapping("/delete-sales")
+    @RequestMapping(value = "/java/delete-sales", method = { RequestMethod.DELETE })
     public String deleteSales() {
         sales.deleteByOrderIdDescLimitOne();
         return "1 Sales deleted";

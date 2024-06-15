@@ -7,16 +7,23 @@ function App() {
   const [pythonFetchTime, setPythonFetchTime] = useState(0);
   const [jsFetchTime, setJSFetchTime] = useState(0);
   const [goFetchTime, setGOFetchTime] = useState(0);
+  const [javaFetchTime, setJavaFetchTime] = useState(0);
 
   const [pythonFetchedData, setPythonFetchedData] = useState(null);
   const [jsFetchedData, setJSFetchedData] = useState<any>([]);
   const [goFetchedData, setGOFetchedData] = useState<any>([]);
+  const [javaFetchedData, setJavaFetchedData] = useState<any>([]);
 
   const [languageSequence, setLanguageSequence] = useState("");
   const [queryType, setQueryType] = useState("");
   const [iterations, setIterations] = useState(0);
 
   const [completedRun, setCompletedRun] = useState("");
+
+  const getJavaRoute = "http://192.168.81.153:9000/java/shippers?"
+  const insertJavaRoute = "http://192.168.81.153:9000/java/category?"
+  const updateJavaRoute = "http://192.168.81.153:9000/java/product?"
+  const deleteJavaRoute = "http://192.168.81.153:9000/java/delete-sales?"
 
   const getGoRoute = "http://192.168.81.153:8083/go/all-shippers";
   const insertGoRoute = "http://192.168.81.153:8083/go/new-category";
@@ -138,6 +145,35 @@ function App() {
     setCompletedRun("Completed!");
   };
 
+  const javaRouteWrapper = (
+    iterations: number,
+    routeURL: string,
+    method: string
+  ) => {
+    let start = performance.now();
+
+    fetch(
+      routeURL +
+        new URLSearchParams({
+          iteration: iterations.toString(),
+        }),
+      {
+        method: method,
+      }
+    )
+      .then((response: any) => {
+        console.log(response);
+        if (response.ok) return response.json();
+      })
+      .then((data) => {
+        let end = performance.now();
+        setJavaFetchTime(end - start);
+        setJavaFetchedData(data);
+      });
+
+    setCompletedRun("Completed!");
+  };  
+
   const conditionCallRoute = () => {
     if (languageSequence === "Go" && queryType === "GET")
       goRouteWrapper(iterations, getGoRoute, "GET");
@@ -145,51 +181,68 @@ function App() {
       jsRouteWrapper(iterations, getJSRoute, "GET");
     else if (languageSequence === "Python" && queryType === "GET")
       pythonRouteWrapper(iterations, getPythonRoute, "GET");
+    else if (languageSequence === "Java" && queryType === "GET")
+      javaRouteWrapper(iterations, getJavaRoute, "GET");
+
     else if (languageSequence === "Go" && queryType === "JOIN")
-      goRouteWrapper(iterations, joinGoRoute, "GET");
+      goRouteWrapper(iterations, joinGoRoute, "JOIN");
     else if (languageSequence === "JavaScript" && queryType === "JOIN")
-      jsRouteWrapper(iterations, joinJSRoute, "GET");
+      jsRouteWrapper(iterations, joinJSRoute, "JOIN");
     else if (languageSequence === "Python" && queryType === "JOIN")
-      pythonRouteWrapper(iterations, joinPythonRoute, "GET");
+      pythonRouteWrapper(iterations, joinPythonRoute, "JOIN");
+
     else if (languageSequence === "Go" && queryType === "INSERT")
       goRouteWrapper(iterations, insertGoRoute, "POST");
     else if (languageSequence === "Python" && queryType === "INSERT")
       pythonRouteWrapper(iterations, insertPythonRoute, "POST");
     else if (languageSequence === "JavaScript" && queryType === "INSERT")
       jsRouteWrapper(iterations, insertJSRoute, "GET");
+    else if (languageSequence === "Java" && queryType === "INSERT")
+      javaRouteWrapper(iterations, insertJavaRoute, "INSERT");
+
     else if (languageSequence === "Go" && queryType === "UPDATE")
       goRouteWrapper(iterations, updateGoRoute, "PUT");
     else if (languageSequence === "JavaScript" && queryType === "UPDATE")
       jsRouteWrapper(iterations, updateJSRoute, "PUT");
     else if (languageSequence === "Python" && queryType === "UPDATE")
       pythonRouteWrapper(iterations, updatePythonRoute, "PUT");
+    else if (languageSequence === "Java" && queryType === "UPDATE")
+      javaRouteWrapper(iterations, updateJavaRoute, "PUT");
+
     else if (languageSequence === "Go" && queryType === "DELETE")
       goRouteWrapper(iterations, deleteGoRoute, "DELETE");
     else if (languageSequence === "JavaScript" && queryType === "DELETE")
       jsRouteWrapper(iterations, deleteJSRoute, "DELETE");
     else if (languageSequence === "Python" && queryType === "DELETE")
       pythonRouteWrapper(iterations, deletePythonRoute, "DELETE");
+    else if (languageSequence === "Java" && queryType === "DELETE")
+      javaRouteWrapper(iterations, deleteJavaRoute, "DELETE");
+
     else if (
-      languageSequence === "JavaScript, Go, Python" &&
+      languageSequence === "JavaScript, Go, Python, Java" &&
       queryType === "GET"
     ) {
       jsRouteWrapper(iterations, getJSRoute, "GET");
       goRouteWrapper(iterations, getGoRoute, "GET");
       pythonRouteWrapper(iterations, getPythonRoute, "GET");
+      javaRouteWrapper(iterations, getJavaRoute, "GET")
+
     } else if (
-      languageSequence === "JavaScript, Go, Python" &&
+      languageSequence === "JavaScript, Go, Python, Java" &&
       queryType === "JOIN"
     ) {
       jsRouteWrapper(iterations, joinJSRoute, "GET");
       goRouteWrapper(iterations, joinGoRoute, "GET");
       pythonRouteWrapper(iterations, joinPythonRoute, "GET");
+
     } else if (
-      languageSequence === "JavaScript, Go, Python" &&
+      languageSequence === "JavaScript, Go, Python, Java" &&
       queryType === "INSERT"
     ) {
       jsRouteWrapper(iterations, insertJSRoute, "GET");
       goRouteWrapper(iterations, insertGoRoute, "GET");
       pythonRouteWrapper(iterations, joinPythonRoute, "GET");
+      javaRouteWrapper(iterations, insertJavaRoute, "GET")
     }
   };
 
@@ -238,9 +291,14 @@ function App() {
       value: "Python",
     },
     {
-      key: "JavaScript, Go, Python",
-      text: "JavaScript, Go, Python",
-      value: "JavaScript, Go, Python",
+      key: "Java",
+      text: "Java",
+      value: "Java",
+    },    
+    {
+      key: "JavaScript, Go, Python, Java",
+      text: "JavaScript, Go, Python, Java",
+      value: "JavaScript, Go, Python, Java",
     },
   ];
 
@@ -344,6 +402,8 @@ function App() {
           goData={goFetchedData}
           pythonTime={pythonFetchTime}
           pythonData={pythonFetchedData}
+          javaTime={javaFetchTime}
+          javaData={javaFetchedData}
         />
       </div>
     </div>

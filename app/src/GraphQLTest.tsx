@@ -236,14 +236,14 @@ export default function GraphQLTest() {
             </span>
           </div>
         ) : null}
-        <AccordionExampleFluid
+        {/* <AccordionExampleFluid
           jsTime={jsFetchTime}
           jsData={jsFetchedData}
           goTime={goFetchTime}
           goData={goFetchedData}
           pythonTime={pythonFetchTime}
           pythonData={pythonFetchedData}
-        />
+        /> */}
       </div>
     </div>
   );
