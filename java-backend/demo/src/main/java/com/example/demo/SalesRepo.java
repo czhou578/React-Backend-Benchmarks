@@ -1,9 +1,14 @@
-// package com.example.demo;
+package com.example.demo;
 
-// import org.springframework.data.jpa.repository.JpaRepository;
-// import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
-// public interface SalesRepo extends JpaRepository<SalesOrder, Long> {
-// @Query(value = "DELETE from salesorder ORDER BY orderId DESC limit 1")
-// void deleteByOrderIdDescLimitOne();
-// }
+import jakarta.transaction.Transactional;
+
+public interface SalesRepo extends JpaRepository<SalesOrder, Integer> {
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE from salesorder ORDER BY orderId DESC limit 1", nativeQuery = true)
+    void deleteByOrderIdDescLimitOne();
+}

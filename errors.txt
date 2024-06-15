@@ -1,3 +1,8 @@
 Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)
 
-Fix: 
+Fix: refer to article 
+
+sudo mysql to open up shell
+
+Can not set short field com.example.demo.Product.reorderLevel to null value error with this code.
+    - use Short, not short

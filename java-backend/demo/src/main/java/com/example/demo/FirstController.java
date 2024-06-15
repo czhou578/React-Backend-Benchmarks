@@ -23,7 +23,8 @@ public class FirstController {
     private ShipperRepo shippers;
     @Autowired
     private UpdateProductService productService;
-    // private SalesRepo sales;
+    @Autowired
+    private SalesRepo sales;
 
     // @GetMapping("/category")
     // public List<Category> index() {
@@ -41,10 +42,10 @@ public class FirstController {
         return productService.updateProduct();
     }
 
-    // @GetMapping("/delete-sales")
-    // public String deleteSales() {
-    // sales.deleteByOrderIdDescLimitOne();
-    // return "1 Sales deleted";
-    // }
+    @GetMapping("/delete-sales")
+    public String deleteSales() {
+        sales.deleteByOrderIdDescLimitOne();
+        return "1 Sales deleted";
+    }
 
 }

@@ -1,7 +1,5 @@
 package com.example.demo;
 
-import com.example.demo.Product;
-import com.example.demo.ProductRepo;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
