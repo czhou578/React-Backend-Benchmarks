@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequestMapping
 public class FirstController {
 
-    // private CategoryRepo repo;
+    @Autowired
+    private InsertCategoryService categoryService;
     @Autowired
     private ShipperRepo shippers;
     @Autowired
@@ -26,10 +27,10 @@ public class FirstController {
     @Autowired
     private SalesRepo sales;
 
-    // @GetMapping("/category")
-    // public List<Category> index() {
-    // return repo.findAll();
-    // }
+    @GetMapping("/category")
+    public Category insertCategory() {
+        return categoryService.insertAndSaveCategory();
+    }
 
     @GetMapping("/shippers")
     public List<Shipper> allShippers() {
