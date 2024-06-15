@@ -19,14 +19,21 @@ public class Product {
     private int categoryId;
     private String quantityPerUnit;
     private int unitPrice;
-    private short unitsInStock;
-    private short unitsOnOrder;
-    private short reorderLevel;
+    private Short unitsInStock;
+    private Short unitsOnOrder;
+    private Short reorderLevel;
     private char discontinued;
+
+    public Product() {
+    }
 
     // productName = 'Product 1'
 
     public void setProductName(String name) {
         this.productName = name;
+    }
+
+    public void setReorderLevel(Short level) {
+        this.reorderLevel = level;
     }
 }

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
@@ -23,7 +22,7 @@ public class UpdateProductService {
         if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
             product.setProductName("Product 1");
-
+            product.setReorderLevel((short) 1);
             return productRepo.save(product);
         }
         return null; // or throw an exception
