@@ -23,6 +23,7 @@ function App() {
   const getJavaRoute = "http://192.168.81.153:9000/java/shippers?"
   const insertJavaRoute = "http://192.168.81.153:9000/java/category?"
   const updateJavaRoute = "http://192.168.81.153:9000/java/product?"
+  const joinJavaRoute = "http://192.168.81.153:9000/java/employee-region?"
   const deleteJavaRoute = "http://192.168.81.153:9000/java/delete-sales?"
 
   const getGoRoute = "http://192.168.81.153:8083/go/all-shippers";
@@ -190,6 +191,8 @@ function App() {
       jsRouteWrapper(iterations, joinJSRoute, "JOIN");
     else if (languageSequence === "Python" && queryType === "JOIN")
       pythonRouteWrapper(iterations, joinPythonRoute, "JOIN");
+    else if (languageSequence == "Java" && queryType === "JOIN")
+      javaRouteWrapper(iterations, joinJavaRoute, "JOIN")
 
     else if (languageSequence === "Go" && queryType === "INSERT")
       goRouteWrapper(iterations, insertGoRoute, "POST");
@@ -231,18 +234,19 @@ function App() {
       languageSequence === "JavaScript, Go, Python, Java" &&
       queryType === "JOIN"
     ) {
-      jsRouteWrapper(iterations, joinJSRoute, "GET");
-      goRouteWrapper(iterations, joinGoRoute, "GET");
-      pythonRouteWrapper(iterations, joinPythonRoute, "GET");
+      jsRouteWrapper(iterations, joinJSRoute, "JOIN");
+      goRouteWrapper(iterations, joinGoRoute, "JOIN");
+      pythonRouteWrapper(iterations, joinPythonRoute, "JOIN");
+      javaRouteWrapper(iterations, joinJavaRoute, "JOIN")
 
     } else if (
       languageSequence === "JavaScript, Go, Python, Java" &&
       queryType === "INSERT"
     ) {
-      jsRouteWrapper(iterations, insertJSRoute, "GET");
-      goRouteWrapper(iterations, insertGoRoute, "GET");
-      pythonRouteWrapper(iterations, joinPythonRoute, "GET");
-      javaRouteWrapper(iterations, insertJavaRoute, "GET")
+      jsRouteWrapper(iterations, insertJSRoute, "INSERT");
+      goRouteWrapper(iterations, insertGoRoute, "INSERT");
+      pythonRouteWrapper(iterations, joinPythonRoute, "INSERT");
+      javaRouteWrapper(iterations, insertJavaRoute, "INSERT")
     }
   };
 
