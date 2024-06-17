@@ -6,12 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.lang.String;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @CrossOrigin
@@ -26,6 +22,14 @@ public class FirstController {
     private UpdateProductService productService;
     @Autowired
     private SalesRepo sales;
+
+    @Autowired
+    private EmployeeTerritoryService employeeTerritoryService;
+
+    @GetMapping("/java/employee-region")
+    public List<Long> getEmployeeCountByRegion() {
+        return employeeTerritoryService.countEmployeesByRegion();
+    }
 
     @GetMapping("/java/category")
     public Category insertCategory() {
