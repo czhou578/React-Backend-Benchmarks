@@ -234,19 +234,36 @@ function App() {
       languageSequence === "JavaScript, Go, Python, Java" &&
       queryType === "JOIN"
     ) {
-      jsRouteWrapper(iterations, joinJSRoute, "JOIN");
-      goRouteWrapper(iterations, joinGoRoute, "JOIN");
-      pythonRouteWrapper(iterations, joinPythonRoute, "JOIN");
-      javaRouteWrapper(iterations, joinJavaRoute, "JOIN")
+      jsRouteWrapper(iterations, joinJSRoute, "GET");
+      goRouteWrapper(iterations, joinGoRoute, "GET");
+      pythonRouteWrapper(iterations, joinPythonRoute, "GET");
+      javaRouteWrapper(iterations, joinJavaRoute, "GET")
 
     } else if (
       languageSequence === "JavaScript, Go, Python, Java" &&
       queryType === "INSERT"
     ) {
-      jsRouteWrapper(iterations, insertJSRoute, "INSERT");
-      goRouteWrapper(iterations, insertGoRoute, "INSERT");
-      pythonRouteWrapper(iterations, joinPythonRoute, "INSERT");
-      javaRouteWrapper(iterations, insertJavaRoute, "INSERT")
+      jsRouteWrapper(iterations, insertJSRoute, "POST");
+      goRouteWrapper(iterations, insertGoRoute, "POST");
+      pythonRouteWrapper(iterations, insertPythonRoute, "POST");
+      javaRouteWrapper(iterations, insertJavaRoute, "POST")
+
+    } else if (
+      languageSequence === "JavaScript, Go, Python, Java" &&
+      queryType === "UPDATE"
+    ) {
+      jsRouteWrapper(iterations, updateJSRoute, "PUT");
+      goRouteWrapper(iterations, updateGoRoute, "PUT");
+      pythonRouteWrapper(iterations, updatePythonRoute, "PUT");
+      javaRouteWrapper(iterations, updateJavaRoute, "PUT")
+    } else if (
+      languageSequence === "JavaScript, Go, Python, Java" &&
+      queryType === "DELETE"
+    ) {
+      jsRouteWrapper(iterations, deleteJSRoute, "DELETE");
+      goRouteWrapper(iterations, deleteGoRoute, "DELETE");
+      pythonRouteWrapper(iterations, deletePythonRoute, "DELETE");
+      javaRouteWrapper(iterations, deleteJavaRoute, "DELETE")
     }
   };
 

@@ -9,7 +9,7 @@ import (
 )
 
 const dbuser = "root"
-const dbpass = "password"
+const dbpass = "Issaquah@411"
 const dbname = "northwind"
 
 type Shipper struct {
@@ -23,7 +23,7 @@ type EmployeeId struct {
 }
 
 func GetShippers() []Shipper {
-	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(192.168.81.153:3306)/"+dbname)
+	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
 
 	if err != nil {
 		fmt.Println("error", err.Error())
@@ -60,7 +60,7 @@ func GetShippers() []Shipper {
 }
 
 func GetCountNumId() []EmployeeId {
-	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(192.168.81.153:3306)/"+dbname)
+	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
 	if err != nil {
 		fmt.Println("error", err.Error())
 		return nil
@@ -95,7 +95,7 @@ func GetCountNumId() []EmployeeId {
 }
 
 func NewCategoryInsert() int64 {
-	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(192.168.81.153:3306)/"+dbname)
+	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
 
 	if err != nil {
 		log.Fatal(err)
@@ -120,7 +120,7 @@ func NewCategoryInsert() int64 {
 }
 
 func UpdateCustomer() int64 {
-	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(192.168.81.153:3306)/"+dbname)
+	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
 
 	if err != nil {
 		log.Fatal(err)
@@ -144,7 +144,7 @@ func UpdateCustomer() int64 {
 }
 
 func DeleteSalesOrder() int64 {
-	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(192.168.81.153:3306)/"+dbname)
+	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
 
 	if err != nil {
 		log.Fatal(err)

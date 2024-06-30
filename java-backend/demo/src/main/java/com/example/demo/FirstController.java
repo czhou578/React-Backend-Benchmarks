@@ -3,6 +3,8 @@ package com.example.demo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.lang.String;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
-@CrossOrigin
 @RequestMapping
 public class FirstController {
 
@@ -31,7 +32,8 @@ public class FirstController {
         return employeeTerritoryService.countEmployeesByRegion();
     }
 
-    @GetMapping("/java/category")
+    @PostMapping("/java/category")
+    @CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "false")
     public Category insertCategory() {
         return categoryService.insertAndSaveCategory();
     }
@@ -41,13 +43,16 @@ public class FirstController {
         return shippers.findAll();
     }
 
-    @RequestMapping(value = "/java/product", method = { RequestMethod.GET, RequestMethod.PUT })
+    @PutMapping("/java/product")
+    @CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "false")
     public Product updateProductName() {
 
         return productService.updateProduct();
     }
 
     @RequestMapping(value = "/java/delete-sales", method = { RequestMethod.DELETE })
+    @CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "false")
+
     public String deleteSales() {
         sales.deleteByOrderIdDescLimitOne();
         return "1 Sales deleted";

@@ -4,6 +4,9 @@ const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 1000; // 1 second
+
 router.get("/javascript/all-customers", (_, res) => {
   let sql = "SELECT * FROM customers";
 
@@ -54,14 +57,26 @@ router.get("/javascript/new-category", (_, res) => {
 });
 
 router.put("/javascript/update-customer", (_, res) => {
-  let sql = "Update product set productName = 'Product 1' where productId = 55";
+  const updateProduct = (retries) => {
+    let sql = "UPDATE product SET productName = 'Product 1' WHERE productId = 55";
 
-  database.query(sql, (error, _) => {
-    if (error) throw error;
+    database.query(sql, (error, result) => {
+      if (error) {
+        if (error.code === 'ER_LOCK_WAIT_TIMEOUT' && retries > 0) {
+          console.log(`Lock wait timeout, retrying... (${retries} attempts left)`);
+          setTimeout(() => updateProduct(retries - 1), RETRY_DELAY);
+        } else {
+          console.error("Database error:", error);
+          res.status(500).send({ error: "An error occurred while updating the product" });
+        }
+      } else {
+        res.status(200).send({ resp: "Data successfully Updated!" });
+        console.log("success!");
+      }
+    });
+  };
 
-    res.status(200).send({ resp: "Data successfully Updated!" });
-    console.log("success!");
-  });
+  updateProduct(MAX_RETRIES);
 });
 
 router.delete("/javascript/delete-salesorder", (_, res) => {
