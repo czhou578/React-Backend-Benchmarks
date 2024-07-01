@@ -31,6 +31,14 @@ func main() {
 	}
 }
 
+type LockWaitTimeoutError struct {
+    Message string
+}
+
+func (e *LockWaitTimeoutError) Error() string {
+    return e.Message
+}
+
 func getAllShippers(c *gin.Context) {
 	shippers := models.GetShippers()
 	fmt.Print(shippers)
@@ -51,9 +59,18 @@ func newCategory(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, lastId)
 }
 
-func UpdateCustomer(c *gin.Context) {
-	updatedId := models.UpdateCustomer()
+// func UpdateCustomer(c *gin.Context) {
+// 	updatedId := models.UpdateCustomer()
 
+// 	c.IndentedJSON(http.StatusOK, updatedId)
+// }
+
+func UpdateCustomer(c *gin.Context) {
+	updatedId, err := models.UpdateCustomerWithRetry()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 	c.IndentedJSON(http.StatusOK, updatedId)
 }
 

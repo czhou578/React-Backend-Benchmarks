@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,13 +22,15 @@ public class FirstController {
     private ShipperRepo shippers;
     @Autowired
     private UpdateProductService productService;
+
     @Autowired
-    private SalesRepo sales;
+    private SalesService salesService;
 
     @Autowired
     private EmployeeTerritoryService employeeTerritoryService;
 
     @GetMapping("/java/employee-region")
+    @CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "false")
     public List<Long> getEmployeeCountByRegion() {
         return employeeTerritoryService.countEmployeesByRegion();
     }
@@ -53,9 +56,14 @@ public class FirstController {
     @RequestMapping(value = "/java/delete-sales", method = { RequestMethod.DELETE })
     @CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "false")
 
-    public String deleteSales() {
-        sales.deleteByOrderIdDescLimitOne();
-        return "1 Sales deleted";
+    public ResponseEntity<?> deleteSales() {
+        try {
+            salesService.deleteLastSalesOrderWithRetry();
+            return ResponseEntity.ok().body("Last sales order deleted!");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error deleting last sales");
+        }
+
     }
 
 }

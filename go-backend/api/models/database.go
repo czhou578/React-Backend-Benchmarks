@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"time"
+	"math"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -11,6 +13,11 @@ import (
 const dbuser = "root"
 const dbpass = "Issaquah@411"
 const dbname = "northwind"
+
+const (
+	maxRetries = 3
+	baseDelay  = 100 * time.Millisecond
+)
 
 type Shipper struct {
 	ShipperId   int
@@ -119,7 +126,28 @@ func NewCategoryInsert() int64 {
 	return lastId
 }
 
-func UpdateCustomer() int64 {
+func UpdateCustomerWithRetry() (int64, error) {
+	var lastErr error
+	for i := 0; i < maxRetries; i++ {
+		lastId, err := UpdateCustomer()
+		if err == nil {
+			return lastId, nil
+		}
+
+		if isLockTimeout(err) {
+			delay := time.Duration(math.Pow(2, float64(i))) * baseDelay
+			log.Printf("Lock timeout, retrying in %v... (attempt %d/%d)", delay, i+1, maxRetries)
+			time.Sleep(delay)
+			lastErr = err
+			continue
+		}
+
+		return 0, err // If it's not a lock timeout, return immediately
+	}
+	return 0, fmt.Errorf("failed after %d attempts: %v", maxRetries, lastErr)
+}
+
+func UpdateCustomer() (int64, error) {
 	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
 
 	if err != nil {
@@ -128,7 +156,7 @@ func UpdateCustomer() int64 {
 
 	defer db.Close()
 
-	results, err := db.Exec("Update product set productName = 'Product 1' where productId = 55")
+	results, err := db.Exec("Update product set productName = 'Product 1' where productId = 23")
 
 	if err != nil {
 		panic(err.Error())
@@ -136,11 +164,11 @@ func UpdateCustomer() int64 {
 
 	lastId, err := results.RowsAffected()
 
-	if err != nil {
-		log.Fatal(err)
-	}
+	return lastId, err
+}
 
-	return lastId
+func isLockTimeout(err error) bool {
+	return err.Error() == "Error 1205: Lock wait timeout exceeded; try restarting transaction"
 }
 
 func DeleteSalesOrder() int64 {

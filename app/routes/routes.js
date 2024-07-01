@@ -44,7 +44,7 @@ router.get("/javascript/num-employeeId", (_, res) => {
   });
 });
 
-router.get("/javascript/new-category", (_, res) => {
+router.post("/javascript/new-category", (_, res) => {
   let sql =
     "Insert into category (categoryName, description, picture) values ('Seafood', 'tasty', null)";
 
@@ -58,7 +58,7 @@ router.get("/javascript/new-category", (_, res) => {
 
 router.put("/javascript/update-customer", (_, res) => {
   const updateProduct = (retries) => {
-    let sql = "UPDATE product SET productName = 'Product 1' WHERE productId = 55";
+    let sql = "UPDATE product SET productName = 'Product 1' WHERE productId = 23";
 
     database.query(sql, (error, result) => {
       if (error) {
@@ -80,14 +80,24 @@ router.put("/javascript/update-customer", (_, res) => {
 });
 
 router.delete("/javascript/delete-salesorder", (_, res) => {
-  let sql = "delete from salesorder order by orderId desc limit 1";
+  const deleteSalesOrder = (retries) => {
+    let sql = "delete from salesorder order by orderId desc limit 1";
 
-  database.query(sql, (error, _) => {
-    if (error) throw error;
+    database.query(sql, (error, _) => {
+      if (error) {
+        if (error.code === 'ER_LOCK_WAIT_TIMEOUT' && retries > 0) {
+          console.log(`Lock wait timeout, retrying... (${retries} attempts left)`);
+          setTimeout(() => deleteSalesOrder(retries - 1), RETRY_DELAY)
+        } else {
+          console.error("Database error:", error);
+          res.status(500).send({ error: "An error occurred while updating the product" })
+        }
+      } else {
+        res.status(200).send({ resp: "Data successfully deleted!" })
+      }
+    });
 
-    res.status(200).send({ resp: "Data successfully deleted!" });
-    console.log("success!");
-  });
+  }
 });
 
 module.exports = router;
