@@ -42,6 +42,7 @@ public class FirstController {
     }
 
     @GetMapping("/java/shippers")
+    @CrossOrigin(origins = "*", allowedHeaders = "*", allowCredentials = "false")
     public List<Shipper> allShippers() {
         return shippers.findAll();
     }

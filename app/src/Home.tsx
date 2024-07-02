@@ -4,6 +4,7 @@ import AccordionExampleFluid from "./Accordion";
 import { Link } from "react-router-dom";
 
 function App() {
+
   const [pythonFetchTime, setPythonFetchTime] = useState(0);
   const [jsFetchTime, setJSFetchTime] = useState(0);
   const [goFetchTime, setGOFetchTime] = useState(0);
