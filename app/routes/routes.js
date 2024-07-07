@@ -1,6 +1,10 @@
 const express = require("express");
 const database = require("../database");
 const jwt = require("jsonwebtoken");
+const redis = require('redis')
+
+const redisClient = redis.createClient()
+const DEFAULT_EXPIRATION = 3600
 
 const router = express.Router();
 
@@ -18,18 +22,64 @@ router.get("/javascript/all-customers", (_, res) => {
   });
 });
 
-router.get("/javascript/all-shippers", (_, res) => {
-  let sql = "SELECT * FROM shipper";
-  let start = performance.now();
+router.get("/javascript/all-shippers", (req, res) => {
+  let isRedisConnected = false;
 
-  database.query(sql, (error, result) => {
-    if (error) throw error;
+  redisClient.connect()
+    .then(() => {
+      console.log('redis is connected');
+      isRedisConnected = true;
+      fetchData();
+    })
+    .catch((err) => {
+      console.log("Redis connection error:", err);
+      fetchData();
+    });
 
-    let end = performance.now();
-    console.log("query time is, ", end - start);
-    res.status(200).send(result);
-    console.log("success!");
-  });
+  function fetchData() {
+    let sql = "SELECT * FROM shipper";
+    let start = performance.now();
+
+    if (isRedisConnected) {
+      redisClient.get('shippers', (error, data) => {
+        if (error) {
+          console.log("Redis get error:", error);
+          queryDatabase();
+        } else if (data != null) {
+          res.json(JSON.parse(data));
+        } else {
+          queryDatabase();
+        }
+      });
+    } else {
+      console.log('query db')
+      queryDatabase();
+    }
+
+    function queryDatabase() {
+      console.log('querying database');
+      database.query(sql, (error, result) => {
+        if (error) {
+          console.log("Database query error:", error);
+          return res.status(500).send("Error querying database");
+        }
+
+        let end = performance.now();
+        console.log("query time is, ", end - start);
+
+        if (isRedisConnected) {
+          redisClient.setEx("shippers", DEFAULT_EXPIRATION, JSON.stringify(result), (setError) => {
+            if (setError) {
+              console.log("Error setting Redis cache:", setError);
+            }
+          });
+        }
+
+        res.status(200).send(result);
+        console.log("success!");
+      });
+    }
+  }
 });
 
 router.get("/javascript/num-employeeId", (_, res) => {

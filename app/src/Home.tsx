@@ -20,6 +20,7 @@ function App() {
   const [iterations, setIterations] = useState(0);
 
   const [completedRun, setCompletedRun] = useState("");
+  const [cache, setCache] = useState("")
 
   const getJavaRoute = "http://192.168.81.153:9000/java/shippers?"
   const insertJavaRoute = "http://192.168.81.153:9000/java/category?"
@@ -324,6 +325,19 @@ function App() {
     },
   ];
 
+  const cacheOptions = [
+    {
+      key: "On",
+      text: "On",
+      value: "On",
+    },
+    {
+      key: "Off",
+      text: "Off",
+      value: "Off",
+    },   
+  ]
+
   return (
     <div className="App">
       <header className="App-header">
@@ -389,6 +403,18 @@ function App() {
                   setIterations(parseInt(data.value));
                 }}
               />
+            </Form.Field>
+            <Form.Field>
+            <label className="label">Cache On/Off</label>
+              <Dropdown
+                placeholder="On/Off"
+                fluid
+                selection
+                options={cacheOptions}
+                onChange={(_, data) => {
+                  setCache(data.value as string);
+                }}
+                />
             </Form.Field>
           </Form.Group>
         </Form>
