@@ -26,33 +26,31 @@ router.get("/javascript/all-shippers", (req, res) => {
   let isRedisConnected = false;
 
   redisClient.connect()
-    .then(() => {
+    .then(async () => {
       console.log('redis is connected');
       isRedisConnected = true;
-      fetchData();
+      await fetchData();
     })
     .catch((err) => {
       console.log("Redis connection error:", err);
       fetchData();
     });
 
-  function fetchData() {
+  async function fetchData() {
+    console.log('entered fetch data')
     let sql = "SELECT * FROM shipper";
     let start = performance.now();
 
     if (isRedisConnected) {
-      redisClient.get('shippers', (error, data) => {
-        if (error) {
-          console.log("Redis get error:", error);
-          queryDatabase();
-        } else if (data != null) {
-          res.json(JSON.parse(data));
-        } else {
-          queryDatabase();
-        }
-      });
+      let data = await redisClient.get('shippers')
+      if (data != null) {
+        res.json(JSON.parse(data))
+      } else {
+        queryDatabase();
+      }
+
     } else {
-      console.log('query db')
+      console.log('redis not connected and query starts')
       queryDatabase();
     }
 
