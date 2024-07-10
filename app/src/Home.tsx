@@ -188,22 +188,22 @@ function App() {
       javaRouteWrapper(iterations, getJavaRoute, "GET");
 
     else if (languageSequence === "Go" && queryType === "JOIN")
-      goRouteWrapper(iterations, joinGoRoute, "JOIN");
+      goRouteWrapper(iterations, joinGoRoute, "GET");
     else if (languageSequence === "JavaScript" && queryType === "JOIN")
-      jsRouteWrapper(iterations, joinJSRoute, "JOIN");
+      jsRouteWrapper(iterations, joinJSRoute, "GET");
     else if (languageSequence === "Python" && queryType === "JOIN")
-      pythonRouteWrapper(iterations, joinPythonRoute, "JOIN");
+      pythonRouteWrapper(iterations, joinPythonRoute, "GET");
     else if (languageSequence == "Java" && queryType === "JOIN")
-      javaRouteWrapper(iterations, joinJavaRoute, "JOIN")
+      javaRouteWrapper(iterations, joinJavaRoute, "GET")
 
     else if (languageSequence === "Go" && queryType === "INSERT")
       goRouteWrapper(iterations, insertGoRoute, "POST");
     else if (languageSequence === "Python" && queryType === "INSERT")
       pythonRouteWrapper(iterations, insertPythonRoute, "POST");
     else if (languageSequence === "JavaScript" && queryType === "INSERT")
-      jsRouteWrapper(iterations, insertJSRoute, "GET");
+      jsRouteWrapper(iterations, insertJSRoute, "POST");
     else if (languageSequence === "Java" && queryType === "INSERT")
-      javaRouteWrapper(iterations, insertJavaRoute, "INSERT");
+      javaRouteWrapper(iterations, insertJavaRoute, "POST");
 
     else if (languageSequence === "Go" && queryType === "UPDATE")
       goRouteWrapper(iterations, updateGoRoute, "PUT");
