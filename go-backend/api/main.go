@@ -32,19 +32,40 @@ func main() {
 }
 
 type LockWaitTimeoutError struct {
-    Message string
+	Message string
+}
+
+type CombinedData struct {
+	data           []models.Shipper `json:"data"`
+	operation_time map[string]int64 `json:"time"`
 }
 
 func (e *LockWaitTimeoutError) Error() string {
-    return e.Message
+	return e.Message
 }
 
 func getAllShippers(c *gin.Context) {
-	shippers := models.GetShippers()
-	fmt.Print(shippers)
+	shippers, operation_time := models.GetShippers()
+	fmt.Println("Shippers, ", shippers)
+	fmt.Println("time, ", operation_time)
 
-	c.Writer.Header().Set("Content-Type", "application/json; charset=utf-8")
-	c.IndentedJSON(http.StatusOK, shippers)
+	combined := CombinedData{
+		data:           shippers,
+		operation_time: operation_time,
+	}
+
+	shipperStrings := fmt.Sprintf("%v", combined)
+
+	fmt.Println("new", combined)
+
+	// c.Writer.Header().Set("Content-Type", "application/json; charset=utf-8")
+	// c.Writer.WriteHeader(http.StatusOK)
+	c.Header("Content-Type", "text/plain; charset=utf-8")
+	c.String(200, shipperStrings)
+	// c.Data(http.StatusOK, "application/json", []byte(combined))
+
+	// c.IndentedJSON(http.StatusOK, combined)
+
 }
 
 func getEmployeeIDCount(c *gin.Context) {

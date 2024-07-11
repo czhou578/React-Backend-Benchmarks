@@ -72,7 +72,7 @@ function App() {
           },
         }).then((response) => {
           console.log(response);
-          if (response.ok) return response.json();
+          if (response.ok) return response.text();
         })
       );
     }

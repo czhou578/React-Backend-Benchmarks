@@ -29,12 +29,14 @@ type EmployeeId struct {
 	CountUserId int
 }
 
-func GetShippers() []Shipper {
+func GetShippers() ([]Shipper, map[string]int64) {
+	start := time.Now()
+
 	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
 
 	if err != nil {
 		fmt.Println("error", err.Error())
-		return nil
+		return []Shipper{}, nil
 	}
 
 	defer db.Close()
@@ -43,7 +45,7 @@ func GetShippers() []Shipper {
 
 	if err != nil {
 		fmt.Println("error", err.Error())
-		return nil
+		return []Shipper{}, nil
 	}
 
 	shippers := []Shipper{}
@@ -62,7 +64,14 @@ func GetShippers() []Shipper {
 		shippers = append(shippers, shipper)
 	}
 
-	return shippers
+	fmt.Println("test", shippers)
+
+	operation_time := time.Since(start).Milliseconds()
+    m := map[string]int64{
+        "Operation Time":   operation_time,
+    }
+
+	return shippers, m
 
 }
 
