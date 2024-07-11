@@ -197,7 +197,9 @@ func isLockTimeout(err error) bool {
 	return err.Error() == "Error 1205: Lock wait timeout exceeded; try restarting transaction"
 }
 
-func DeleteSalesOrder() int64 {
+func DeleteSalesOrder() (int64, int64) {
+	start := time.Now()
+
 	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
 
 	if err != nil {
@@ -217,6 +219,7 @@ func DeleteSalesOrder() int64 {
 	if err != nil {
 		log.Fatal(err)
 	}
+	operation_time := time.Since(start).Milliseconds()
 
-	return lastId
+	return lastId, operation_time
 }

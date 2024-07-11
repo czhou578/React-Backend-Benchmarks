@@ -110,10 +110,12 @@ func UpdateCustomer(c *gin.Context) {
 }
 
 func DeleteSalesorder(c *gin.Context) {
-	updatedId := models.DeleteSalesOrder()
+	updatedId, operation_time := models.DeleteSalesOrder()
 	print(updatedId)
 
-	c.IndentedJSON(http.StatusOK, updatedId)
+	combinedString := fmt.Sprintf("Updated Id. Backend operation took %dms", operation_time)
+	c.Header("Content-Type", "text/plain; charset=utf-8")
+	c.String(200, combinedString)
 }
 
 func getCEORoadster(c *gin.Context) {
