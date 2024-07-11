@@ -83,9 +83,11 @@ func getEmployeeIDCount(c *gin.Context) {
 }
 
 func newCategory(c *gin.Context) {
-	lastId := models.NewCategoryInsert()
+	lastId, operation_time := models.NewCategoryInsert()
 
-	c.IndentedJSON(http.StatusOK, lastId)
+	combinedString := fmt.Sprintf("Inserted Id is %d, Backend operation took %dms", lastId, operation_time)
+	c.Header("Content-Type", "text/plain; charset=utf-8")
+	c.String(200, combinedString)
 }
 
 // func UpdateCustomer(c *gin.Context) {
@@ -95,12 +97,16 @@ func newCategory(c *gin.Context) {
 // }
 
 func UpdateCustomer(c *gin.Context) {
-	updatedId, err := models.UpdateCustomerWithRetry()
+	updatedId, operation_time, err := models.UpdateCustomerWithRetry()
+	fmt.Println("operation time, ", operation_time)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.IndentedJSON(http.StatusOK, updatedId)
+	fmt.Println(updatedId)
+	combinedString := fmt.Sprintf("Updated Id. Backend operation took %dms", operation_time)
+	c.Header("Content-Type", "text/plain; charset=utf-8")
+	c.String(200, combinedString)
 }
 
 func DeleteSalesorder(c *gin.Context) {

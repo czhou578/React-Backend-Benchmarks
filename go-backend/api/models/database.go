@@ -117,7 +117,9 @@ func GetCountNumId() ([]EmployeeId, map[string]int64) {
 
 }
 
-func NewCategoryInsert() int64 {
+func NewCategoryInsert() (int64, int64) {
+	start := time.Now()
+
 	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
 
 	if err != nil {
@@ -137,17 +139,19 @@ func NewCategoryInsert() int64 {
 	if err != nil {
 		log.Fatal(err)
 	}
+	operation_time := time.Since(start).Milliseconds()
 
 	fmt.Printf("The last inserted row id: %d\n", lastId)
-	return lastId
+	return lastId, operation_time
 }
 
-func UpdateCustomerWithRetry() (int64, error) {
+func UpdateCustomerWithRetry() (int64, int64, error) {
+
 	var lastErr error
 	for i := 0; i < maxRetries; i++ {
-		lastId, err := UpdateCustomer()
+		lastId, operation_time, err := UpdateCustomer()
 		if err == nil {
-			return lastId, nil
+			return lastId, operation_time, nil
 		}
 
 		if isLockTimeout(err) {
@@ -158,12 +162,15 @@ func UpdateCustomerWithRetry() (int64, error) {
 			continue
 		}
 
-		return 0, err // If it's not a lock timeout, return immediately
+		return 0, operation_time, err // If it's not a lock timeout, return immediately
 	}
-	return 0, fmt.Errorf("failed after %d attempts: %v", maxRetries, lastErr)
+
+	return 0, 0, fmt.Errorf("failed after %d attempts: %v", maxRetries, lastErr)
 }
 
-func UpdateCustomer() (int64, error) {
+func UpdateCustomer() (int64, int64, error) {
+	start := time.Now()
+
 	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
 
 	if err != nil {
@@ -180,7 +187,10 @@ func UpdateCustomer() (int64, error) {
 
 	lastId, err := results.RowsAffected()
 
-	return lastId, err
+	operation_time := time.Since(start).Milliseconds()
+	fmt.Println("operation time in database, ", operation_time)
+
+	return lastId, operation_time, err
 }
 
 func isLockTimeout(err error) bool {
