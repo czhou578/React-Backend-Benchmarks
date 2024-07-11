@@ -2,6 +2,7 @@ import mysql.connector
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from fetch import getData
+import time
 
 import requests
 
@@ -50,6 +51,7 @@ def executeDelete(cursor=mydbcursor):
 
 @app.route('/python/all-shippers', methods=['GET'])
 def requesting():
+    start_time = time.perf_counter()
     iterations = request.args.get('iteration')
     print(iterations)
     returnData = []
@@ -59,11 +61,19 @@ def requesting():
         mydbcursor = executeSelect()
         returnData.append(mydbcursor)
 
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
+    elapsed_time = 1000 * elapsed_time
+
+    returnData.append("Operation Time took " + str(elapsed_time) + " milliseconds")
+
     return jsonify(returnData)
 
 
 @app.route('/python/count-employee-id', methods=['GET'])
 def processCountEmployeeId():
+    start_time = time.perf_counter()
+
     iterations = request.args.get('iteration')
     print(iterations)
     returnData = []
@@ -71,11 +81,19 @@ def processCountEmployeeId():
     for x in range(int(iterations)):
         fetchedData = executeJoin()
         returnData.append(fetchedData)
+
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
+    elapsed_time = 1000 * elapsed_time
+    returnData.append("Operation Time took " + str(elapsed_time) + " milliseconds")
+
     return jsonify(returnData)
 
 
 @app.route('/python/new-category', methods=['POST'])
 def addNewCategory():
+    start_time = time.perf_counter()
+
     iterations = request.args.get('iteration')
     returnData = "Data successfully inserted!"
 
@@ -83,27 +101,44 @@ def addNewCategory():
         execute = executeInsert()
         print(execute)
 
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
+    elapsed_time = 1000 * elapsed_time
+    returnData += " Operation Time took " + str(elapsed_time) + " milliseconds"
+
     return jsonify(returnData)
 
 
 @app.route('/python/update-customer', methods=['PUT'])
 def updateCustomer():
+    start_time = time.perf_counter()
     iterations = request.args.get('iteration')
 
     for x in range(int(iterations)):
         data = executeUpdate()
 
-    return jsonify("Data Inserted!")
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
+    elapsed_time = 1000 * elapsed_time
+
+    return jsonify("Data Inserted! Operation time took " + str(elapsed_time) + " milliseconds")
 
 
 @app.route("/python/delete-salesorder", methods=['DELETE'])
 def deleteSalesorder():
+    start_time = time.perf_counter()
+
+
     iterations = request.args.get('iteration')
 
     for x in range(int(iterations)):
         data = executeDelete()
 
-    return jsonify("Data deleted!")
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
+    elapsed_time = 1000 * elapsed_time
+
+    return jsonify("Data deleted! Operation time took " + str(elapsed_time) + " milliseconds")
 
 
 @app.route("/python/graphql/get", methods=['GET'])
