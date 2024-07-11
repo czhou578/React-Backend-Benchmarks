@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"time"
 	"math"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -67,19 +67,21 @@ func GetShippers() ([]Shipper, map[string]int64) {
 	fmt.Println("test", shippers)
 
 	operation_time := time.Since(start).Milliseconds()
-    m := map[string]int64{
-        "Operation Time":   operation_time,
-    }
+	m := map[string]int64{
+		"Operation Time": operation_time,
+	}
 
 	return shippers, m
 
 }
 
-func GetCountNumId() []EmployeeId {
+func GetCountNumId() ([]EmployeeId, map[string]int64) {
+	start := time.Now()
+
 	db, err := sql.Open("mysql", dbuser+":"+dbpass+"@tcp(127.0.0.1:3306)/"+dbname)
 	if err != nil {
 		fmt.Println("error", err.Error())
-		return nil
+		return []EmployeeId{}, nil
 	}
 
 	defer db.Close()
@@ -88,7 +90,7 @@ func GetCountNumId() []EmployeeId {
 
 	if err != nil {
 		fmt.Println("error", err.Error())
-		return nil
+		return []EmployeeId{}, nil
 	}
 
 	countEmployees := []EmployeeId{}
@@ -106,7 +108,12 @@ func GetCountNumId() []EmployeeId {
 
 	}
 
-	return countEmployees
+	operation_time := time.Since(start).Milliseconds()
+	m := map[string]int64{
+		"Operation Time": operation_time,
+	}
+
+	return countEmployees, m
 
 }
 
