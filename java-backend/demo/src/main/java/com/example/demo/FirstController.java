@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 import java.lang.String;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,7 +63,9 @@ public class FirstController {
     public ResponseEntity<?> deleteSales() {
         try {
             salesService.deleteLastSalesOrderWithRetry();
-            return ResponseEntity.ok().body("Last sales order deleted!");
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Last sales order deleted!");
+            return ResponseEntity.ok().body(response);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Error deleting last sales");
         }

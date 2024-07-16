@@ -153,29 +153,27 @@ router.put("/javascript/update-customer", (_, res) => {
 });
 
 router.delete("/javascript/delete-salesorder", (_, res) => {
-  const deleteSalesOrder = (retries) => {
-    let sql = "delete from salesorder order by orderId desc limit 1";
-    let start = performance.now();
+  const deleteOrder = async () => {
+    try {
+      let start = performance.now();
 
-    database.query(sql, (error, _) => {
-      if (error) {
-        if (error.code === 'ER_LOCK_WAIT_TIMEOUT' && retries > 0) {
-          console.log(`Lock wait timeout, retrying... (${retries} attempts left)`);
-          setTimeout(() => deleteSalesOrder(retries - 1), RETRY_DELAY)
-        } else {
-          console.error("Database error:", error);
-          res.status(500).send({ error: "An error occurred while updating the product" })
-        }
-      } else {
-        let end = performance.now();
+      let sql = "delete from salesorder order by orderId desc limit 1";
 
-        res.status(200).send({ resp: "Data successfully deleted!", "Operation Completion Time (ms)": end - start })
-      }
-    });
+      await database.beginTransaction()
+      await database.query(sql)
+      await database.commit()
+      console.log("Transaction committed successfully. Records deleted.");
+      let end = performance.now();
 
+      res.status(200).send({ resp: "Data successfully deleted!", "Operation Completion Time (ms)": end - start })
+
+    } catch (error) {
+      console.error(`Error: ${error.message}`);
+    }
   }
 
-  deleteSalesOrder(3)
-});
+  deleteOrder()
+})
+
 
 module.exports = router;

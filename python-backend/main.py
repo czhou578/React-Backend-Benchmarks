@@ -130,9 +130,12 @@ def deleteSalesorder():
 
 
     iterations = request.args.get('iteration')
+    mydb.start_transaction()
 
     for x in range(int(iterations)):
         data = executeDelete()
+    
+    mydb.commit()
 
     end_time = time.perf_counter()
     elapsed_time = end_time - start_time
