@@ -16,6 +16,7 @@ export default function AccordionExampleFluid(props: Props) {
 
   const panels = [
     {
+      key: 1,
       title: "JavaScript Run",
       content: (
         <Accordion.Content>
@@ -28,6 +29,7 @@ export default function AccordionExampleFluid(props: Props) {
       ),
     },
     {
+      key: 2,
       title: "Go Run",
       content: (
         <Accordion.Content>
@@ -40,6 +42,7 @@ export default function AccordionExampleFluid(props: Props) {
       ),
     },
     {
+      key: 3,
       title: "Python Run",
       content: (
         <Accordion.Content>
@@ -52,6 +55,7 @@ export default function AccordionExampleFluid(props: Props) {
       ),
     },
     {
+      key: 4,
       title: "Java Run",
       content: (
         <Accordion.Content>
