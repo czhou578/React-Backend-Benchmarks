@@ -22,93 +22,130 @@ router.get("/javascript/all-customers", (_, res) => {
   });
 });
 
-router.get("/javascript/all-shippers", (_, res) => {
-  let sql = "SELECT * FROM shipper";
-  let start = performance.now();
+// router.get("/javascript/all-shippers", (_, res) => {
+//   let sql = "SELECT * FROM shipper";
+//   let start = performance.now();
 
-  database.query(sql, (error, result) => {
-    if (error) throw error;
+//   database.query(sql, (error, result) => {
+//     if (error) throw error;
 
-    let end = performance.now();
-    // console.log("query time is, ", end - start);
-    result.push({ "Operation Completion Time (ms)": end - start })
-    res.status(200).send(result);
-    console.log("success!");
-  });
-});
-
-// router.get("/javascript/all-shippers", (req, res) => {
-//   let isRedisConnected = false;
-
-//   redisClient.connect()
-//     .then(async () => {
-//       console.log('redis is connected');
-//       isRedisConnected = true;
-//       await fetchData();
-//     })
-//     .catch((err) => {
-//       console.log("Redis connection error:", err);
-//       fetchData();
-//     });
-
-//   async function fetchData() {
-//     console.log('entered fetch data')
-//     let sql = "SELECT * FROM shipper";
-//     let start = performance.now();
-
-//     if (isRedisConnected) {
-//       let data = await redisClient.get('shippers')
-//       if (data != null) {
-//         res.json(JSON.parse(data))
-//       } else {
-//         queryDatabase();
-//       }
-//     } else {
-//       console.log('redis not connected and query starts')
-//       queryDatabase();
-//     }
-
-//     function queryDatabase() {
-//       database.query(sql, (error, result) => {
-//         if (error) {
-//           console.log("Database query error:", error);
-//           return res.status(500).send("Error querying database");
-//         }
-
-
-//         if (isRedisConnected) {
-//           redisClient.setEx("shippers", DEFAULT_EXPIRATION, JSON.stringify(result), (setError) => {
-//             if (setError) {
-//               console.log("Error setting Redis cache:", setError);
-//             }
-//           });
-//         }
-
-//         let end = performance.now();
-//         result.push({ "Operation Completion Time (ms)": end - start })
-
-//         res.status(200).send(result);
-//         console.log("success!");
-//       });
-//     }
-//   }
+//     let end = performance.now();
+//     // console.log("query time is, ", end - start);
+//     result.push({ "Operation Completion Time (ms)": end - start })
+//     res.status(200).send(result);
+//     console.log("success!");
+//   });
 // });
 
+router.get("/javascript/all-shippers", (req, res) => {
+  let isRedisConnected = false;
+
+  redisClient.connect()
+    .then(async () => {
+      console.log('redis is connected');
+      isRedisConnected = true;
+      await fetchData();
+    })
+    .catch((err) => {
+      console.log("Redis connection error:", err);
+      fetchData();
+    });
+
+  async function fetchData() {
+    console.log('entered fetch data')
+    let sql = "SELECT * FROM shipper";
+    let start = performance.now();
+
+    if (isRedisConnected) {
+      let data = await redisClient.get('shippers')
+      if (data != null) {
+        res.json(JSON.parse(data))
+      } else {
+        queryDatabase();
+      }
+    } else {
+      console.log('redis not connected and query starts')
+      queryDatabase();
+    }
+
+    function queryDatabase() {
+      database.query(sql, (error, result) => {
+        if (error) {
+          console.log("Database query error:", error);
+          return res.status(500).send("Error querying database");
+        }
+
+
+        if (isRedisConnected) {
+          redisClient.setEx("shippers", DEFAULT_EXPIRATION, JSON.stringify(result), (setError) => {
+            if (setError) {
+              console.log("Error setting Redis cache:", setError);
+            }
+          });
+        }
+
+        let end = performance.now();
+        result.push({ "Operation Completion Time (ms)": end - start })
+
+        res.status(200).send(result);
+        console.log("success!");
+      });
+    }
+  }
+});
+
 router.get("/javascript/num-employeeId", (_, res) => {
-  let sql =
-    "select count(employeeId) from employeeterritory natural join region natural join territory group by regionId";
+  let isRedisConnected = false;
 
-  let start = performance.now();
+  redisClient.connect()
+    .then(async () => {
+      console.log('redis is connected')
+      isRedisConnected = true
+      await fetchData()
+    }).catch((err) => {
+      console.log('redis connection error', err)
+      fetchData()
+    })
 
-  database.query(sql, (error, result) => {
-    if (error) throw error;
+  async function fetchData() {
+    let sql = "select count(employeeId) from employeeterritory natural join region natural join territory group by regionId";
+    let start = performance.now();
 
-    let end = performance.now();
-    result.push({ "Operation Completion Time (ms)": end - start })
+    if (isRedisConnected) {
+      let data = await redisClient.get('countEmployeeId')
+      if (data != null) {
+        res.json(JSON.parse(data))
+      } else {
+        queryDatabase()
+      }
+    } else {
+      console.log('redis is not connected')
+      queryDatabase()
+    }
 
-    res.status(200).send(result);
-    console.log("success!");
-  });
+    function queryDatabase() {
+      database.query(sql, (error, result) => {
+        if (error) {
+          console.log("Database query error:", error);
+          return res.status(500).send("Error querying database");
+        }
+
+        if (isRedisConnected) {
+          redisClient.setEx("countEmployeeId", DEFAULT_EXPIRATION, JSON.stringify(result), (setError) => {
+            if (setError) {
+              console.log("Error setting Redis cache:", setError);
+            }
+          });
+        }
+
+        let end = performance.now();
+        result.push({ "Operation Completion Time (ms)": end - start })
+
+        res.status(200).send(result);
+        console.log("success!");
+      });
+    }
+  }
 });
 
 router.post("/javascript/new-category", (_, res) => {
