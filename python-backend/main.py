@@ -3,10 +3,14 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from fetch import getData
 import time
+import redis
+import json
 
 import requests
 
 app = Flask(__name__)
+redis_client = redis.Redis(host='localhost', port=6379, db=0)
+
 CORS(app)
 
 mydb = mysql.connector.connect(
@@ -51,7 +55,14 @@ def executeDelete(cursor=mydbcursor):
 
 @app.route('/python/all-shippers', methods=['GET'])
 def requesting():
+
+
     start_time = time.perf_counter()
+
+    value = redis_client.get('shippers')
+    if value:
+        return jsonify(value.decode('utf-8'))
+
     iterations = request.args.get('iteration')
     print(iterations)
     returnData = []
@@ -60,6 +71,8 @@ def requesting():
     for x in range(int(iterations)):
         mydbcursor = executeSelect()
         returnData.append(mydbcursor)
+    
+    redis_client.set('shippers', json.dumps(returnData))
 
     end_time = time.perf_counter()
     elapsed_time = end_time - start_time

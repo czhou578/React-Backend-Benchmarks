@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # Array to hold the process IDs of the server instances
 pids=()
 
@@ -13,6 +14,11 @@ stop_servers() {
 
 # Trap SIGINT (Ctrl+C) and SIGTERM signals to stop servers before exiting
 trap stop_servers SIGINT SIGTERM
+
+#start redis server
+redis-server &
+pids+=($!)
+echo "Running Redis server"
 
 # Start the Node.js server
 npm --prefix ./app run server &

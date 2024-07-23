@@ -75,7 +75,6 @@ router.get("/javascript/all-shippers", (req, res) => {
           return res.status(500).send("Error querying database");
         }
 
-
         if (isRedisConnected) {
           redisClient.setEx("shippers", DEFAULT_EXPIRATION, JSON.stringify(result), (setError) => {
             if (setError) {
