@@ -9,7 +9,7 @@
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.3",
     "axios": "^1.15.2",
-    "body-parser": "^1.20.4",
+    "body-parser": "^1.20.5",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "jsonwebtoken": "^9.0.2",
