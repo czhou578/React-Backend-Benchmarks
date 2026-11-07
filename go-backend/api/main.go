@@ -36,13 +36,13 @@ type LockWaitTimeoutError struct {
 }
 
 type CombinedData struct {
-	data           []models.Shipper `json:"data"`
-	operation_time map[string]int64 `json:"time"`
+	Data          []models.Shipper `json:"data"`
+	OperationTime map[string]int64 `json:"time"`
 }
 
 type CombinedDataCountId struct {
-	data           []models.EmployeeId `json:"data"`
-	operation_time map[string]int64    `json:"time"`
+	Data          []models.EmployeeId `json:"data"`
+	OperationTime map[string]int64    `json:"time"`
 }
 
 func (e *LockWaitTimeoutError) Error() string {
@@ -53,8 +53,8 @@ func getAllShippers(c *gin.Context) {
 	shippers, operation_time := models.GetShippers()
 
 	combined := CombinedData{
-		data:           shippers,
-		operation_time: operation_time,
+		Data:          shippers,
+		OperationTime: operation_time,
 	}
 
 	shipperStrings := fmt.Sprintf("%v", combined)
@@ -70,8 +70,8 @@ func getEmployeeIDCount(c *gin.Context) {
 	countId, operation_time := models.GetCountNumId()
 
 	combined := CombinedDataCountId{
-		data:           countId,
-		operation_time: operation_time,
+		Data:          countId,
+		OperationTime: operation_time,
 	}
 
 	countIdString := fmt.Sprintf("%v", combined)

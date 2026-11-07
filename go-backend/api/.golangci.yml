@@ -1,0 +1,8 @@
+version: "2"
+linters:
+  settings:
+    errcheck:
+      # The handlers open and close a DB handle per request. A failed Close
+      # has nothing to report to the client, so the error is ignored on purpose.
+      exclude-functions:
+        - (*database/sql.DB).Close

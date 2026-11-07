@@ -12,7 +12,16 @@ interface Props {
 }
 
 export default function AccordionExampleFluid(props: Props) {
-  const { jsTime, goTime, pythonTime, javaTime, pythonData, goData, jsData, javaData } = props;
+  const {
+    jsTime,
+    goTime,
+    pythonTime,
+    javaTime,
+    pythonData,
+    goData,
+    jsData,
+    javaData,
+  } = props;
 
   const panels = [
     {
@@ -66,7 +75,7 @@ export default function AccordionExampleFluid(props: Props) {
           {javaData ? JSON.stringify(javaData, null, 2) : null}
         </Accordion.Content>
       ),
-    },    
+    },
   ];
 
   return (

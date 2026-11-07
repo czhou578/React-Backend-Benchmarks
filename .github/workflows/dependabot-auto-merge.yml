@@ -1,0 +1,41 @@
+name: Dependabot auto-merge
+
+# Enables GitHub auto-merge on every pull request that Dependabot opens.
+# GitHub then merges the pull request as soon as the required status checks
+# on the main branch pass. The required checks are set in the branch
+# protection rule for main (Settings -> Branches).
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    name: Enable auto-merge
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'czhou578/React-Backend-Benchmarks'
+    steps:
+      - name: Fetch Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable auto-merge
+        # To skip major version bumps, add this condition to the step:
+        #   if: steps.metadata.outputs.update-type != 'version-update:semver-major'
+        run: |
+          echo "Dependencies: ${{ steps.metadata.outputs.dependency-names }}"
+          echo "Update type:  ${{ steps.metadata.outputs.update-type }}"
+          if [ "$(gh pr view "$PR_URL" --json autoMergeRequest --jq '.autoMergeRequest != null')" = "true" ]; then
+            echo "Auto-merge is already enabled on this pull request."
+            exit 0
+          fi
+          gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
