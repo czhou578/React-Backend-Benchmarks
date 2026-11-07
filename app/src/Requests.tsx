@@ -13,7 +13,7 @@ export default function Requests() {
   const [pythonFetchedData, setPythonFetchedData] = useState(null);
   const [jsFetchedData, setJSFetchedData] = useState<any>([]);
   const [goFetchedData, setGOFetchedData] = useState<any>([]);
-  
+
   const jsRequest = () => {
     let fetches = [];
 

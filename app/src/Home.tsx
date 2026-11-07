@@ -4,7 +4,6 @@ import AccordionExampleFluid from "./Accordion";
 import { Link } from "react-router-dom";
 
 function App() {
-
   const [pythonFetchTime, setPythonFetchTime] = useState(0);
   const [jsFetchTime, setJSFetchTime] = useState(0);
   const [goFetchTime, setGOFetchTime] = useState(0);
@@ -20,13 +19,13 @@ function App() {
   const [iterations, setIterations] = useState(0);
 
   const [completedRun, setCompletedRun] = useState("");
-  const [cache, setCache] = useState("")
+  const [cache, setCache] = useState("");
 
-  const getJavaRoute = "http://192.168.81.153:9000/java/shippers?"
-  const insertJavaRoute = "http://192.168.81.153:9000/java/category?"
-  const updateJavaRoute = "http://192.168.81.153:9000/java/product?"
-  const joinJavaRoute = "http://192.168.81.153:9000/java/employee-region?"
-  const deleteJavaRoute = "http://192.168.81.153:9000/java/delete-sales?"
+  const getJavaRoute = "http://192.168.81.153:9000/java/shippers?";
+  const insertJavaRoute = "http://192.168.81.153:9000/java/category?";
+  const updateJavaRoute = "http://192.168.81.153:9000/java/product?";
+  const joinJavaRoute = "http://192.168.81.153:9000/java/employee-region?";
+  const deleteJavaRoute = "http://192.168.81.153:9000/java/delete-sales?";
 
   const getGoRoute = "http://192.168.81.153:8083/go/all-shippers";
   const insertGoRoute = "http://192.168.81.153:8083/go/new-category";
@@ -175,7 +174,7 @@ function App() {
       });
 
     setCompletedRun("Completed!");
-  };  
+  };
 
   const conditionCallRoute = () => {
     if (languageSequence === "Go" && queryType === "GET")
@@ -186,7 +185,6 @@ function App() {
       pythonRouteWrapper(iterations, getPythonRoute, "GET");
     else if (languageSequence === "Java" && queryType === "GET")
       javaRouteWrapper(iterations, getJavaRoute, "GET");
-
     else if (languageSequence === "Go" && queryType === "JOIN")
       goRouteWrapper(iterations, joinGoRoute, "GET");
     else if (languageSequence === "JavaScript" && queryType === "JOIN")
@@ -194,8 +192,7 @@ function App() {
     else if (languageSequence === "Python" && queryType === "JOIN")
       pythonRouteWrapper(iterations, joinPythonRoute, "GET");
     else if (languageSequence == "Java" && queryType === "JOIN")
-      javaRouteWrapper(iterations, joinJavaRoute, "GET")
-
+      javaRouteWrapper(iterations, joinJavaRoute, "GET");
     else if (languageSequence === "Go" && queryType === "INSERT")
       goRouteWrapper(iterations, insertGoRoute, "POST");
     else if (languageSequence === "Python" && queryType === "INSERT")
@@ -204,7 +201,6 @@ function App() {
       jsRouteWrapper(iterations, insertJSRoute, "POST");
     else if (languageSequence === "Java" && queryType === "INSERT")
       javaRouteWrapper(iterations, insertJavaRoute, "POST");
-
     else if (languageSequence === "Go" && queryType === "UPDATE")
       goRouteWrapper(iterations, updateGoRoute, "PUT");
     else if (languageSequence === "JavaScript" && queryType === "UPDATE")
@@ -213,7 +209,6 @@ function App() {
       pythonRouteWrapper(iterations, updatePythonRoute, "PUT");
     else if (languageSequence === "Java" && queryType === "UPDATE")
       javaRouteWrapper(iterations, updateJavaRoute, "PUT");
-
     else if (languageSequence === "Go" && queryType === "DELETE")
       goRouteWrapper(iterations, deleteGoRoute, "DELETE");
     else if (languageSequence === "JavaScript" && queryType === "DELETE")
@@ -222,7 +217,6 @@ function App() {
       pythonRouteWrapper(iterations, deletePythonRoute, "DELETE");
     else if (languageSequence === "Java" && queryType === "DELETE")
       javaRouteWrapper(iterations, deleteJavaRoute, "DELETE");
-
     else if (
       languageSequence === "JavaScript, Go, Python, Java" &&
       queryType === "GET"
@@ -230,8 +224,7 @@ function App() {
       jsRouteWrapper(iterations, getJSRoute, "GET");
       goRouteWrapper(iterations, getGoRoute, "GET");
       pythonRouteWrapper(iterations, getPythonRoute, "GET");
-      javaRouteWrapper(iterations, getJavaRoute, "GET")
-
+      javaRouteWrapper(iterations, getJavaRoute, "GET");
     } else if (
       languageSequence === "JavaScript, Go, Python, Java" &&
       queryType === "JOIN"
@@ -239,8 +232,7 @@ function App() {
       jsRouteWrapper(iterations, joinJSRoute, "GET");
       goRouteWrapper(iterations, joinGoRoute, "GET");
       pythonRouteWrapper(iterations, joinPythonRoute, "GET");
-      javaRouteWrapper(iterations, joinJavaRoute, "GET")
-
+      javaRouteWrapper(iterations, joinJavaRoute, "GET");
     } else if (
       languageSequence === "JavaScript, Go, Python, Java" &&
       queryType === "INSERT"
@@ -248,8 +240,7 @@ function App() {
       jsRouteWrapper(iterations, insertJSRoute, "POST");
       goRouteWrapper(iterations, insertGoRoute, "POST");
       pythonRouteWrapper(iterations, insertPythonRoute, "POST");
-      javaRouteWrapper(iterations, insertJavaRoute, "POST")
-
+      javaRouteWrapper(iterations, insertJavaRoute, "POST");
     } else if (
       languageSequence === "JavaScript, Go, Python, Java" &&
       queryType === "UPDATE"
@@ -257,7 +248,7 @@ function App() {
       jsRouteWrapper(iterations, updateJSRoute, "PUT");
       goRouteWrapper(iterations, updateGoRoute, "PUT");
       pythonRouteWrapper(iterations, updatePythonRoute, "PUT");
-      javaRouteWrapper(iterations, updateJavaRoute, "PUT")
+      javaRouteWrapper(iterations, updateJavaRoute, "PUT");
     } else if (
       languageSequence === "JavaScript, Go, Python, Java" &&
       queryType === "DELETE"
@@ -265,7 +256,7 @@ function App() {
       jsRouteWrapper(iterations, deleteJSRoute, "DELETE");
       goRouteWrapper(iterations, deleteGoRoute, "DELETE");
       pythonRouteWrapper(iterations, deletePythonRoute, "DELETE");
-      javaRouteWrapper(iterations, deleteJavaRoute, "DELETE")
+      javaRouteWrapper(iterations, deleteJavaRoute, "DELETE");
     }
   };
 
@@ -317,7 +308,7 @@ function App() {
       key: "Java",
       text: "Java",
       value: "Java",
-    },    
+    },
     {
       key: "JavaScript, Go, Python, Java",
       text: "JavaScript, Go, Python, Java",
@@ -335,8 +326,8 @@ function App() {
       key: "Off",
       text: "Off",
       value: "Off",
-    },   
-  ]
+    },
+  ];
 
   return (
     <div className="App">
@@ -405,7 +396,7 @@ function App() {
               />
             </Form.Field>
             <Form.Field>
-            <label className="label">Cache On/Off</label>
+              <label className="label">Cache On/Off</label>
               <Dropdown
                 placeholder="On/Off"
                 fluid
@@ -414,7 +405,7 @@ function App() {
                 onChange={(_, data) => {
                   setCache(data.value as string);
                 }}
-                />
+              />
             </Form.Field>
           </Form.Group>
         </Form>
